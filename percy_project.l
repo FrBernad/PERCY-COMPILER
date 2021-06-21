@@ -10,6 +10,10 @@ int yydebug=1;
 %}
 
 /*Auxiliary declarations end & Regular definitions start here*/
+
+%option nounput noinput yylineno
+%option warn nodefault
+
 digit   [0-9] 
 alpha   [a-zA-Z_] 
        
@@ -59,7 +63,10 @@ alpha   [a-zA-Z_]
 [0|1-9]{digit}+  {yylval = atoi(yytext);return NUMBER;}
 {alpha}({alpha}|{digit})* {return ID;}
 
-.           {return yytext[0]};
+
+[ \t\n]     {}
+
+.           {return yytext[0];}
 
 %%
     /*--------------- Auxiliary functions ---------------------*/

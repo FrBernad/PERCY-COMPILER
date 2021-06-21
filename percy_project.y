@@ -1,16 +1,11 @@
 %{
 
+#include "utils/yacc_utils/yacc_utils.h"
 /* All the headers that you put here will be added to the output C file on top.*/
-#include <stdio.h>
-#include <string.h>
-
-int yylex();
-void yyerror(char const *s);
-
 %}
 
 // The next Section is the Token definitions.  All of them will be DEFINE in y.tab.h
-%token NUMBER
+%token NUMBER INSERT
 
 /*CONDITIONALS*/
 %token IF ELSE
@@ -77,11 +72,6 @@ void yyerror(char const *s);
 
 
 %%
-
-void yyerror(char const *s){
-    return;
-}
-
 
 /*
 element html = new html();

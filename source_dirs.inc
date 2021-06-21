@@ -1,0 +1,3 @@
+UTILS=utils/*
+
+SOURCE_DIRS=$(UTILS) 
