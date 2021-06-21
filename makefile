@@ -31,7 +31,4 @@ $(SOURCES_C_YACC): $(SOURCES_YACC)
 clean:
 	rm -rf $(EXECUTABLE_COMPILER) $(SOURCES_C_YACC) $(SOURCES_C_LEX) $(HEADER_C_YACC) $(OBJECTS_FILES)
 
-cleanTest: clean
-	rm -rf test_results
-
 .PHONY: all clean

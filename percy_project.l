@@ -2,9 +2,14 @@
 
 /* Auxiliary declarations start here*/
 %{
-#include <stdlib.h>
+#include "compiler_utils/lex_utils/lex_utils.h"
+#include "compiler_utils/yacc_utils/yacc_utils.h"
 
 #include "y.tab.h"
+
+#define TOKEN(t) (yylval.token = t)
+#define SAVE_INT yylval.int_value = atoi(yytext);
+#define SAVE_SYMBOL yylval.symbol = new_lex_string(yytext,yyleng);
 
 int yydebug=1;
 %}
@@ -22,46 +27,46 @@ alpha   [a-zA-Z_]
     
 /*--------------------- Rules ----------------------------*/
 %%
-    /*Conditionals*/
-"if"        {yylval = IF; return IF;}
-"else"      {yylval = ELSE;return ELSE;}
+ /*Conditionals*/
+"if"                            {return TOKEN(IF);}
+"else"                          {return TOKEN(ELSE);}
 
-    /*Cicle*/
-"for"       {yylval = FOR; return FOR;}
-"do"        {yylval = DO; return DO;}
-"while"     {yylval = WHILE; return WHILE;}
+ /*Cicle*/
+"for"                           {return TOKEN(FOR);}
+"do"                            {return TOKEN(DO);}
+"while"                         {return TOKEN(WHILE);}
 
-"return"    {yylval = RETURN; return RETURN;}
+"return"                        {return TOKEN(RETURN);}
 
-    /*Logical operators*/;
-"&&"        {yylval = OP_AND; return OP_AND;}
-"||"        {yylval = OP_OR; return OP_OR;}
-    /*No se si faltaria el !exp o no se como ponerlo*/
+ /*Logical operators*/
+"&&"                            {return TOKEN(OP_AND);}
+"||"                            {return TOKEN(OP_OR);}
+ /*No se si faltaria el !exp o no se como ponerlo*/
 
-    /*Elements*/
-"main"      {yylval = MAIN; return MAIN;}
-"element"   {yylval = ELEMENT; return ELEMENT;}
-"new"       {yylval = NEW; return NEW;}
-"html"      {yylval = HTML; return HTML;}
-"navbar"    {yylval = NAVBAR; return NAVBAR;}
-"footer"    {yylval = FOOTER; return FOOTER;}
-"container" {yylval = CONTAINER; return CONTAINER;}
-"header"    {yylval = HEADER; return HEADER;}
-"insert"     {yylval = INSERT; return INSERT;}
+ /*Elements*/
+"main"                          {return TOKEN(MAIN);}
+"element"                       {return TOKEN(ELEMENT);}
+"new"                           {return TOKEN(NEW);}
+"html"                          {return TOKEN(HTML);}
+"navbar"                        {return TOKEN(NAVBAR);}
+"footer"                        {return TOKEN(FOOTER);}
+"container"                     {return TOKEN(CONTAINER);}
+"header"                        {return TOKEN(HEADER);}
+"insert"                        {return TOKEN(INSERT);}
 
 
-    /*Relational operators*/
+ /*Relational operators*/
 
-">"         {yylval = OP_GREATER;return OP_GREATER;}
-">="		{yylval = OP_GREATER_OR_EQ; return OP_GREATER_OR_EQ;}
-"<"         {yylval = OP_LESS; return OP_LESS;}
-"<="		{yylval = OP_LESS_OR_EQ; return OP_LESS_OR_EQ;}
-"=="		{yylval = OP_EQ; return OP_EQ;}
-"!="        {yylval = OP_NEQ; return OP_NEQ;}
+">"                             {return TOKEN(OP_GREATER);}
+">="		                    {return TOKEN(OP_GREATER_OR_EQ);}
+"<"                             {return TOKEN(OP_LESS); }
+"<="		                    {return TOKEN(OP_LESS_OR_EQ);}
+"=="		                    {return TOKEN(OP_EQ);}
+"!="                            {return TOKEN(OP_NEQ);}
 
-    /*valor*/
-[0|1-9]{digit}+  {yylval = atoi(yytext);return NUMBER;}
-{alpha}({alpha}|{digit})* {return ID;}
+ /*valor*/
+[0|1-9]{digit}+                 {SAVE_INT;return NUM;}
+{alpha}({alpha}|{digit})*       {SAVE_SYMBOL;return ID;}
 
 
 [ \t\n]     {}
@@ -69,7 +74,7 @@ alpha   [a-zA-Z_]
 .           {return yytext[0];}
 
 %%
-    /*--------------- Auxiliary functions ---------------------*/
+ /*--------------- Auxiliary functions ---------------------*/
 
 int yywrap(void){
     return 1;
