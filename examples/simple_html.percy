@@ -1,3 +1,6 @@
 main(){
-    element var = new html;
+    element aux1 = new html;
+    element aux2 = new html;
+    aux1.insert(aux2);
+    render(aux1);
 }

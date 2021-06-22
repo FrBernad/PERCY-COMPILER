@@ -1,6 +1,6 @@
 #include "assignation.h"
 
-static ast_node_t * ast_assignation_process() {
+static ast_node_t* ast_assignation_process(ast_node_t* node) {
     return NULL;
 }
 

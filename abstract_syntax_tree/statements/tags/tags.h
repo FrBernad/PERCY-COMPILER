@@ -6,7 +6,7 @@
 
 typedef struct ast_tag_node {
     int type;
-} ast_string_value_node_t;
+} ast_tag_node_t;
 
 ast_functions_t ast_tag_provider();
 ast_node_t* create_ast_html_tag_node();

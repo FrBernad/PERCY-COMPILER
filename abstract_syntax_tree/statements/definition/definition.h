@@ -6,6 +6,6 @@
 
 ast_functions_t ast_definition_provider();
 
-ast_node_t* create_ast_definition_node(int type, char* symbol, ast_node_t* value);
+ast_node_t* create_ast_definition_node(int type, char* name, ast_node_t* value);
 
 #endif

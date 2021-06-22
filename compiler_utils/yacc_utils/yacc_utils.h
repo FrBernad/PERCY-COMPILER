@@ -9,6 +9,8 @@
 #include "abstract_syntax_tree/statements/for/for.h"
 #include "abstract_syntax_tree/statements/functions/functions.h"
 #include "abstract_syntax_tree/statements/if/if.h"
+#include "abstract_syntax_tree/statements/insert/insert.h"
+#include "abstract_syntax_tree/statements/statements/statements.h"
 #include "abstract_syntax_tree/statements/tags/tags.h"
 #include "abstract_syntax_tree/statements/values/values.h"
 #include "abstract_syntax_tree/statements/while/while.h"

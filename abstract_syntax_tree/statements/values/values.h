@@ -3,11 +3,12 @@
 
 #include "abstract_syntax_tree/ast/ast.h"
 #include "abstract_syntax_tree/ast_functions/ast_functions.h"
+#include "compiler_utils/element_list/element_list.h"
 
-ast_functions_t ast_string_value_provider();
-ast_functions_t ast_int_value_provider();
-ast_functions_t ast_tag_value_provider();
-ast_functions_t ast_reference_value_provider();
+char* ast_string_value_process(ast_node_t* node);
+int ast_int_value_process(ast_node_t* node);
+element_t* ast_tag_value_process(ast_node_t* node);
+char* ast_reference_value_process(ast_node_t* node);
 
 ast_node_t* create_ast_tag_node(ast_node_t* tag);
 ast_node_t* create_ast_int_node(int value);

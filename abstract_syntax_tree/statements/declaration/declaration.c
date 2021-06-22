@@ -1,6 +1,8 @@
 #include "declaration.h"
 
-static ast_node_t * ast_declaration_process() {
+static ast_node_t* ast_declaration_process(ast_node_t* node) {
+    // ast_declaration_node_t* declaration = (ast_declaration_node_t*)node;
+
     return NULL;
 }
 

@@ -37,7 +37,7 @@ ALPHA   [a-zA-Z_]
 "do"                            {return TOKEN(DO);}
 "while"                         {return TOKEN(WHILE);}
 
-"return"                        {return TOKEN(RETURN);}
+"render"                        {return TOKEN(RENDER);}
 
  /*Logical operators*/
 "&&"                            {return TOKEN(OP_AND);}

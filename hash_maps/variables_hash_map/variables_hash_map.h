@@ -11,14 +11,17 @@ typedef struct var {
     union {
         char* str;
         int num;
-        element_node_t * node;
+        element_t * tag;
+        char* reference;
     } value;
 } var_t;
 
 void init_variables_hash_map();
 
-bool variables_hash_map_put(char* var_name, int type);
+var_t* variables_hash_map_put(char* var_name, int type);
 
 bool variables_hash_map_exists(char* var_name);
+
+var_t* variables_hash_map_get(char* var_name);
 
 #endif

@@ -9,16 +9,19 @@ typedef struct element {
 } element_t;
 
 typedef struct element_node {
-    element_t element;
+    element_t * element;
     struct element_node* next;
 } element_node_t;
 
 typedef struct element_list {
     struct element_node* first;
     struct element_node* last;
-    int size;
 } element_list_t;
 
-void insert_element(element_node_t* parent_element, element_node_t* child_element);
+void insert_element(element_t * parent_element, element_t * child_element);
+
+element_t* create_element(int type);
+
+void init_elements_list(element_list_t** element_list);
 
 #endif

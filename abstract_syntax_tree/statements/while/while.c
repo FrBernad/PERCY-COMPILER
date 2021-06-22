@@ -1,6 +1,6 @@
 #include "while.h"
 
-static ast_node_t * ast_while_process() {
+static ast_node_t* ast_while_process(ast_node_t* node) {
     return NULL;
 }
 

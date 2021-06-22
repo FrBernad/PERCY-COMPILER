@@ -7,7 +7,7 @@
 typedef struct ast_declaration_node {
     int type;
 
-    struct ast_node* symbol;
+    struct ast_node* var_name;
     struct ast_node* value;
 
 } ast_declaration_node_t;

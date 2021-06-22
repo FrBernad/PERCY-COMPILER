@@ -11,8 +11,7 @@ void init_variables_hash_map() {
     variables_hm = kh_init(variables_hash_map);
 }
 
-bool variables_hash_map_put(char* var_name, int type) {
-
+var_t* variables_hash_map_put(char* var_name, int type) {
     if (!variables_hash_map_exists(var_name)) {
 
         var_t* new_var = create_new_var(var_name, type);
@@ -21,21 +20,21 @@ bool variables_hash_map_put(char* var_name, int type) {
         khiter_t k = kh_put(variables_hash_map, variables_hm, var_name, &ret);
 
         if (ret == -1) {
-            return false;
+            return NULL;
         }
 
         kh_val(variables_hm, k) = new_var;
 
-        return true;
+        return new_var;
     }
     
-    return false;
+    return NULL;
 }
 
 bool variables_hash_map_exists(char* var_name) {
     khiter_t k = kh_get(variables_hash_map, variables_hm, var_name);
 
-    return k == kh_end(variables_hm);
+    return k != kh_end(variables_hm);
 }
 
 static var_t* create_new_var(char* var_name, int type) {
@@ -45,4 +44,14 @@ static var_t* create_new_var(char* var_name, int type) {
     new_var->name = var_name;
 
     return new_var;
+}
+
+var_t* variables_hash_map_get(char* var_name) {
+    khiter_t k = kh_get(variables_hash_map, variables_hm, var_name);
+
+    if (k != kh_end(variables_hm)) {
+        return kh_val(variables_hm, k);
+    }
+
+    return NULL;
 }

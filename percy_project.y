@@ -20,8 +20,6 @@
 // The next Section is the Token definitions.  All of them will be DEFINE in y.tab.h
 %token FIRST_TK
 
-%token INSERT
-
 /*CONDITIONALS*/
 %token IF ELSE
 %nonassoc IF ELSE
@@ -41,17 +39,18 @@
 
 %token <token> OP_GREATER OP_GREATER_OR_EQ OP_LESS OP_LESS_OR_EQ OP_EQ OP_NEQ
 
-%token <token> MAIN ELEMENT_TYPE NEW INT_TYPE STRING_TYPE HTML NAVBAR FOOTER CONTAINER HEADER
+%token <token> MAIN RENDER ELEMENT_TYPE NEW INT_TYPE STRING_TYPE HTML NAVBAR FOOTER CONTAINER HEADER INSERT
 
 %token <string_value> STRING_VALUE
 %token <int_value> INT_VALUE
 
 %token <symbol> ID
 
-%type <node> TAG STATEMENT STATEMENTS DEFINITION DECLARATION ASSIGNATION VALUE 
+%type <node> TAG STATEMENT STATEMENTS DEFINITION DECLARATION ASSIGNATION VALUE INSERT_MT
 %type <token> TYPE 
+%type <symbol> RENDER_CALL 
 
-%token DECLARATION_TK TAG_TK ASSIGNATION_TK DEFINITION_TK STATEMENTS_TK FUNCTION_TK
+%token DECLARATION_TK TAG_TK ASSIGNATION_TK DEFINITION_TK STATEMENTS_TK FUNCTION_TK INSERT_MT_TK
 
 
 %right '='
@@ -64,14 +63,15 @@
 %token LAST_TK
 
 %start PROGRAM
+
 /*
 main(){
     element html = new html();
 }
 
                       PROGRAM
-                /                 \
-             MAIN                 STATEMENTS
+                                \
+                                  STATEMENTS
                                 /            \                 
                           STATEMENTS        STATEMENT
                             /                       \
@@ -80,21 +80,26 @@ main(){
                                                 ID           TAG
                                                                \
                                                                 html
-                                            
-                                               
-                            
 */
+
 %%
-    PROGRAM:                    MAIN '(' ')' '{' STATEMENTS '}' 
+    PROGRAM:                    MAIN '(' ')' '{' STATEMENTS RENDER_CALL '}' 
                                     {
-                                        ast_node_t * main_function = create_ast_function_node("main",$5);
+                                        ast_node_t * main_function = create_ast_function_node("main",$5,$6);
+                                        printf("created main!\n");
                                         save_function(main_function);
+                                    }
+                                ;
+
+    RENDER_CALL:                RENDER '(' ID ')' ';'
+                                    {
+                                        $$ = $3;
                                     }
                                 ;
 
     STATEMENTS:                 STATEMENTS STATEMENT    
                                     {
-                                        $$ = create_ast_node($1,$2); 
+                                        $$ = create_ast_statements_node($1,$2); 
                                     }
                                 |                       
                                     { 
@@ -102,9 +107,11 @@ main(){
                                     }
                                 ;
 
+    
     STATEMENT:                  DEFINITION              { $$ = $1; }
                                 | DECLARATION           { $$ = $1; }
                                 | ASSIGNATION           { $$ = $1; }
+                                | INSERT_MT             { $$ = $1; }
                                 ;
                                 
     DEFINITION:                 TYPE ID '=' VALUE ';'
@@ -123,6 +130,12 @@ main(){
     ASSIGNATION:                ID '=' VALUE ';'
                                     {
                                         $$ = create_ast_assignation_node($1,$3);       
+                                    }
+                                ;
+
+    INSERT_MT:                  ID '.' INSERT '(' ID ')' ';'
+                                    {
+                                        $$ = create_ast_insert_node($1,$5);       
                                     }
                                 ;
 
@@ -187,11 +200,9 @@ int main(int argc, char const *argv[]){
     
 
     //1° PARSEAR argumentos
-    /*2° INISIALIZAR TREE, TABLE, ETC*/ 
-    init_compiler();
-    //3° 
-    // PARSEAR INPUT PERCY
-    //4° 
+    /*2° INISIALIZAR TREE, TABLE, ETC*/ init_compiler();
+    //3° PARSEAR INPUT PERCY
+    //4° ANALISIS SEMANTICO, GUARDADO DE VARIABLES
     //5° RENDER (a partir de root)
     //6° LIBERAR RECURSOS, CERRAR COSAS*/
 
