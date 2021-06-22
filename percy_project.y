@@ -1,6 +1,7 @@
 %{
 
 #include "compiler_utils/yacc_utils/yacc_utils.h"
+
 /* All the headers that you put here will be added to the output C file on top.*/
 %}
 
@@ -9,13 +10,17 @@
 
     char * symbol;
 
+    char * string_value;
+
     int int_value;
 
     int token;
 }
 
 // The next Section is the Token definitions.  All of them will be DEFINE in y.tab.h
-%token NUM INSERT
+%token FIRST_TK
+
+%token INSERT
 
 /*CONDITIONALS*/
 %token IF ELSE
@@ -34,19 +39,20 @@
 
 /*Relational operators*/
 
-%token OP_GREATER OP_GREATER_OR_EQ OP_LESS OP_LESS_OR_EQ OP_EQ OP_NEQ
+%token <token> OP_GREATER OP_GREATER_OR_EQ OP_LESS OP_LESS_OR_EQ OP_EQ OP_NEQ
 
-%token <token> ELEMENT NEW
-%token <node> HTML NAVBAR FOOTER CONTAINER HEADER
+%token <token> MAIN ELEMENT_TYPE NEW INT_TYPE STRING_TYPE HTML NAVBAR FOOTER CONTAINER HEADER
 
-%token MAIN
+%token <string_value> STRING_VALUE
+%token <int_value> INT_VALUE
 
 %token <symbol> ID
 
-%type <node> STATEMENT STATEMENTS DEFINITION DECLARATION ASSIGNATION IF_STATEMENT ITERATION_STATEMENT
-%type <token> TYPE
+%type <node> TAG STATEMENT STATEMENTS DEFINITION DECLARATION ASSIGNATION VALUE 
+%type <token> TYPE 
 
-%type <node> TAG
+%token DECLARATION_TK TAG_TK ASSIGNATION_TK DEFINITION_TK STATEMENTS_TK FUNCTION_TK
+
 
 %right '='
 %left OR AND
@@ -54,6 +60,8 @@
 %left '+' '-'
 %left '*' '/'
 %left '!'
+
+%token LAST_TK
 
 %start PROGRAM
 /*
@@ -77,11 +85,21 @@ main(){
                             
 */
 %%
-    PROGRAM:                    MAIN '(' ')' '{' STATEMENTS '}' {/*crear programa*/;}
+    PROGRAM:                    MAIN '(' ')' '{' STATEMENTS '}' 
+                                    {
+                                        ast_node_t * main_function = create_ast_function_node("main",$5);
+                                        save_function(main_function);
+                                    }
                                 ;
 
     STATEMENTS:                 STATEMENTS STATEMENT    
-                                |                       { $$ = NULL; }
+                                    {
+                                        $$ = create_ast_node($1,$2); 
+                                    }
+                                |                       
+                                    { 
+                                        $$ = NULL; 
+                                    }
                                 ;
 
     STATEMENT:                  DEFINITION              { $$ = $1; }
@@ -89,9 +107,9 @@ main(){
                                 | ASSIGNATION           { $$ = $1; }
                                 ;
                                 
-    DEFINITION:                 TYPE ID '=' NEW TAG ';'
+    DEFINITION:                 TYPE ID '=' VALUE ';'
                                     {
-                                        $$ = create_ast_definition_node($1,$2,$5);
+                                        $$ = create_ast_definition_node($1,$2,$4);
                                     }
                                 ;
 
@@ -102,24 +120,65 @@ main(){
                                 ;
 
 
-    ASSIGNATION:                ID '=' TAG ';'
+    ASSIGNATION:                ID '=' VALUE ';'
                                     {
                                         $$ = create_ast_assignation_node($1,$3);       
                                     }
                                 ;
 
+    VALUE:                      NEW TAG 
+                                    {
+                                        $$ = create_ast_tag_node($2);
+                                    }
+                                | INT_VALUE
+                                    {
+                                        $$ = create_ast_int_node($1);
+                                    }
+                                | STRING_VALUE
+                                    {
+                                        $$ = create_ast_string_node($1);
+                                    }
+                                | ID
+                                    {
+                                        $$ = create_ast_symbol_reference_node($1);
+                                    }
+                                ;
+
     TAG:                        HTML
+                                    {
+                                        $$ = create_ast_html_tag_node();
+                                    }
                                 | NAVBAR
+                                    {
+                                        $$ = create_ast_navbar_tag_node();
+                                    }
                                 | FOOTER
+                                    {
+                                        $$ = create_ast_footer_tag_node();
+                                    }
                                 | CONTAINER
+                                    {
+                                        $$ = create_ast_container_tag_node();
+                                    }
                                 | HEADER
+                                    {
+                                        $$ = create_ast_header_tag_node();
+                                    }
                                 ;
 
-    TYPE:                        ELEMENT
+    TYPE:                        ELEMENT_TYPE 
+                                    {
+                                        $$ = $1;
+                                    }
+                                |  INT_TYPE
+                                    {
+                                        $$ = $1;
+                                    }
+                                |  STRING_TYPE
+                                    {
+                                        $$ = $1;
+                                    }
                                 ;
-
-                        
-
 
 
 %%
@@ -128,13 +187,17 @@ int main(int argc, char const *argv[]){
     
 
     //1° PARSEAR argumentos
-    /*2° INISIALIZAR TREE, TABLE, ETC*/ init_compiler();
+    /*2° INISIALIZAR TREE, TABLE, ETC*/ 
+    init_compiler();
     //3° 
     // PARSEAR INPUT PERCY
     //4° 
     //5° RENDER (a partir de root)
     //6° LIBERAR RECURSOS, CERRAR COSAS*/
 
+    yyparse();
+
+    execute_main_function();
 
     return 0;
 }
@@ -142,8 +205,6 @@ int main(int argc, char const *argv[]){
 /*
 
 main(){
-
-
     element html = new html();
     element html;
     html  =

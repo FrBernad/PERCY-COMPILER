@@ -1,6 +1,7 @@
 #include "for.h"
 
-static void ast_for_process() {
+static ast_node_t * ast_for_process() {
+    return NULL;
 }
 
 static void ast_for_destroy() {

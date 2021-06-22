@@ -6,12 +6,13 @@
 #include "compiler_utils/yacc_utils/yacc_utils.h"
 
 #include "y.tab.h"
+#include <stdio.h>
 
 #define TOKEN(t) (yylval.token = t)
-#define SAVE_INT yylval.int_value = atoi(yytext);
 #define SAVE_SYMBOL yylval.symbol = new_lex_string(yytext,yyleng);
+#define SAVE_STRING_LITERAL(t,l) yylval.string_value = new_lex_string(t+1,yyleng-2);
+#define SAVE_INT yylval.int_value = atoi(yytext);
 
-int yydebug=1;
 %}
 
 /*Auxiliary declarations end & Regular definitions start here*/
@@ -19,8 +20,8 @@ int yydebug=1;
 %option nounput noinput yylineno
 %option warn nodefault
 
-digit   [0-9] 
-alpha   [a-zA-Z_] 
+DIGIT   [0-9] 
+ALPHA   [a-zA-Z_] 
        
 /*----------------Declarations section ends here----------*/
     
@@ -45,7 +46,9 @@ alpha   [a-zA-Z_]
 
  /*Elements*/
 "main"                          {return TOKEN(MAIN);}
-"element"                       {return TOKEN(ELEMENT);}
+"element"                       {return TOKEN(ELEMENT_TYPE);}
+"string"                        {return TOKEN(STRING_TYPE);}
+"int"                           {return TOKEN(INT_TYPE);}
 "new"                           {return TOKEN(NEW);}
 "html"                          {return TOKEN(HTML);}
 "navbar"                        {return TOKEN(NAVBAR);}
@@ -65,13 +68,14 @@ alpha   [a-zA-Z_]
 "!="                            {return TOKEN(OP_NEQ);}
 
  /*valor*/
-[0|1-9]{digit}+                 {SAVE_INT;return NUM;}
-{alpha}({alpha}|{digit})*       {SAVE_SYMBOL;return ID;}
+{ALPHA}({ALPHA}|{DIGIT})*       {SAVE_SYMBOL;return ID;}
 
+0|[1-9]{DIGIT}*                 {SAVE_INT;return INT_VALUE;}
+\"([^\\"\n]|\\.)*\"				{SAVE_STRING_LITERAL(yytext,yyleng); return STRING_VALUE;}
 
-[ \t\n]     {}
+[ \t\n]                         {}
 
-.           {return yytext[0];}
+.                               {return yytext[0];}
 
 %%
  /*--------------- Auxiliary functions ---------------------*/

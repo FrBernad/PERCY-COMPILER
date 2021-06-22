@@ -1,6 +1,7 @@
 #include "while.h"
 
-static void ast_while_process() {
+static ast_node_t * ast_while_process() {
+    return NULL;
 }
 
 static void ast_while_destroy() {

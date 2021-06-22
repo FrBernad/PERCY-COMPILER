@@ -5,11 +5,11 @@ struct element_list;
 
 typedef struct element {
     char* name;
+    struct element_list* child_elements;
 } element_t;
 
 typedef struct element_node {
     element_t element;
-    struct element_list* element_list;
     struct element_node* next;
 } element_node_t;
 

@@ -1,6 +1,7 @@
 #include "assignation.h"
 
-static void ast_assignation_process() {
+static ast_node_t * ast_assignation_process() {
+    return NULL;
 }
 
 static void ast_assignation_destroy() {
@@ -11,7 +12,7 @@ ast_functions_t ast_assignation_provider(){
         .process = ast_assignation_process,
         .destroy = ast_assignation_destroy
     };
-    
+
     return functions;
 }
 

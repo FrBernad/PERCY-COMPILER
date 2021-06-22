@@ -1,6 +1,7 @@
 #include "else.h"
 
-static void ast_else_process() {
+static ast_node_t * ast_else_process() {
+    return NULL;
 }
 
 static void ast_else_destroy() {

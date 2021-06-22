@@ -7,3 +7,5 @@ CFLAGS+=-O3
 CFLAGS+=-Wno-unused-parameter -Wno-implicit-fallthrough
 
 CFLAGS+=-lfl
+
+YACCFLAGS += -d -v -t -Wcounterexamples

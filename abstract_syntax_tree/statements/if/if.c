@@ -1,6 +1,7 @@
 #include "if.h"
 
-static void ast_if_process() {
+static ast_node_t * ast_if_process() {
+    return NULL;
 }
 
 static void ast_if_destroy() {
@@ -15,5 +16,6 @@ ast_functions_t ast_if_provider() {
 }
 
 ast_node_t* create_ast_if_node(){
+
     return NULL;
 }
