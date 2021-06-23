@@ -6,13 +6,6 @@
 #include "abstract_syntax_tree/ast/ast.h"
 #include "y.tab.h"
 
-typedef struct ast_functions {
-    ast_node_t* (*process)(ast_node_t* node);
-    void (*destroy)();
-} ast_functions_t;
-
-void init_ast_functions();
-
 void execute_ast(ast_node_t* ast);
 
 ast_node_t* execute_node(ast_node_t* node);

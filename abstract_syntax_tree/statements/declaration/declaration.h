@@ -6,12 +6,12 @@
 
 typedef struct ast_declaration_node {
     int type;
-    
+    ast_node_t* (*process)(ast_node_t* node);
+    void (*destroy)();
+
     int value_type;
     char* var_name;
 } ast_declaration_node_t;
-
-ast_functions_t ast_declaration_provider();
 
 ast_node_t* create_ast_declaration_node(int type, char* symbol);
 

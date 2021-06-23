@@ -161,21 +161,21 @@ main(){
                                     {
                                         $$ = create_ast_html_tag_node();
                                     }
-                                | NAVBAR
+                                | NAVBAR '(' STRING_VALUE ')'
                                     {
-                                        $$ = create_ast_navbar_tag_node();
+                                        $$ = create_ast_navbar_tag_node($3);
                                     }
-                                | FOOTER
+                                | FOOTER '(' STRING_VALUE ')'
                                     {
-                                        $$ = create_ast_footer_tag_node();
+                                        $$ = create_ast_footer_tag_node($3);
                                     }
-                                | CONTAINER
+                                | CONTAINER '(' STRING_VALUE ')'
                                     {
-                                        $$ = create_ast_container_tag_node();
+                                        $$ = create_ast_container_tag_node($3);
                                     }
-                                | HEADER
+                                | HEADER '(' STRING_VALUE ')'
                                     {
-                                        $$ = create_ast_header_tag_node();
+                                        $$ = create_ast_header_tag_node($3);
                                     }
                                 ;
 

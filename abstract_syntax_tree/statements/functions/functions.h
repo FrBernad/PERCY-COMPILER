@@ -5,16 +5,15 @@
 #include "abstract_syntax_tree/ast_functions/ast_functions.h"
 
 typedef struct ast_function_node {
-    
     int type;
+    ast_node_t* (*process)(ast_node_t* node);
+    void (*destroy)();
 
     char* name;
     ast_node_t* statements;
-    char * render_var;
-
+    char* render_var;
 } ast_function_node_t;
 
-ast_functions_t ast_function_provider();
-ast_node_t* create_ast_function_node(char* function_name, ast_node_t* statements, char * render_var);
+ast_node_t* create_ast_function_node(char* function_name, ast_node_t* statements, char* render_var);
 
 #endif

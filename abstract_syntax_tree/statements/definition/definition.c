@@ -9,7 +9,9 @@
 
 typedef struct ast_definition_node {
     int type;
-
+    ast_node_t* (*process)(ast_node_t* node);
+    void (*destroy)();
+    
     int value_type;
 
     char* var_name;
@@ -51,19 +53,13 @@ static ast_node_t* ast_definition_process(ast_node_t* node) {
 static void ast_definition_destroy() {
 }
 
-ast_functions_t ast_definition_provider() {
-    ast_functions_t functions = {
-        .process = ast_definition_process,
-        .destroy = ast_definition_destroy};
-
-    return functions;
-}
-
 ast_node_t* create_ast_definition_node(int type, char* name, ast_node_t* value) {
 
     ast_definition_node_t* definition_node = malloc(sizeof(*definition_node));
 
     definition_node->type = DEFINITION_TK;
+    definition_node->process = ast_definition_process;
+    definition_node->destroy = ast_definition_destroy;
 
     definition_node->value_type = type;
     definition_node->var_name = name;

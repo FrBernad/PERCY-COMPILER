@@ -12,13 +12,14 @@ static FILE *output;
 
 static void render_element(element_t *element, int depth);
 static void indent(int depth);
+static void body(char *body, int depth);
+static void style(char *style);
 
 void yyerror(char const *s) {
     printf("Error! %s\n\n", s);
 }
 
 void init_compiler() {
-    init_ast_functions();
 
     init_functions_hash_map();
     init_variables_hash_map();
@@ -51,6 +52,7 @@ void execute_main_function() {
 
     if (to_render == NULL || to_render->type != ELEMENT_TYPE) {
         printf("invalid render element\n");
+        return;
     }
 
     render_element(to_render->value.tag, 0);
@@ -59,7 +61,11 @@ void execute_main_function() {
 
 static void render_element(element_t *element, int depth) {
     indent(depth);
-    fprintf(output, "<%s>\n", element->name);
+    fprintf(output, "<%s", element->name);
+    style(element->style);
+    fprintf(output, ">\n");
+
+    body(element->body, depth + 1);
 
     element_list_t *child_elements = element->child_elements;
 
@@ -79,5 +85,18 @@ static void render_element(element_t *element, int depth) {
 static void indent(int depth) {
     for (int i = 0; i < depth; i++) {
         fprintf(output, "\t");
+    }
+}
+
+static void body(char *body, int depth) {
+    if (body != NULL) {
+        indent(depth);
+        fprintf(output, "%s\n", body);
+    }
+}
+
+static void style(char * style){
+    if(style!=NULL){
+        fprintf(output, " style=\"%s\"", style);
     }
 }

@@ -4,8 +4,6 @@
 #include "abstract_syntax_tree/ast/ast.h"
 #include "abstract_syntax_tree/ast_functions/ast_functions.h"
 
-ast_functions_t ast_assignation_provider();
-
 ast_node_t* create_ast_assignation_node(char* var_name, ast_node_t* value);
 
 #endif

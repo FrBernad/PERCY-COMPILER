@@ -32,32 +32,42 @@ void init_elements_list(element_list_t** element_list) {
     (*element_list)->first = (*element_list)->last;
 }
 
-element_t* create_element(int type) {
+element_t* create_element(ast_tag_node_t* tag_node) {
     element_t* element = calloc(1,sizeof(*element));
     
     if(element == NULL){
         return NULL;
     }
 
-    switch (type) {
+    switch (tag_node->type) {
         case HTML:
             element->name = "html";
+            element->body = tag_node->body;
+            element->style = NULL;
             break;
 
         case NAVBAR:
-            element->name = "navbar";
+            element->name = "div";
+            element->body = tag_node->body;
+            element->style = "";
             break;
 
         case FOOTER:
-            element->name = "footer";
+            element->name = "div";
+            element->body = tag_node->body;
+            element->style = "";
             break;
 
         case CONTAINER:
-            element->name = "container";
+            element->name = "div";
+            element->body = tag_node->body;
+            element->style = "";
             break;
 
         case HEADER:
-            element->name = "header";
+            element->name = "div";
+            element->body = tag_node->body;
+            element->style = "";
             break;
 
         default:

@@ -6,9 +6,12 @@
 
 typedef struct ast_tag_node {
     int type;
+    ast_node_t* (*process)(ast_node_t* node);
+    void (*destroy)();
+
+    char * body;
 } ast_tag_node_t;
 
-ast_functions_t ast_tag_provider();
 ast_node_t* create_ast_html_tag_node();
 ast_node_t* create_ast_navbar_tag_node();
 ast_node_t* create_ast_footer_tag_node();

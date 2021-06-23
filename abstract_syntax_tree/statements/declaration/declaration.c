@@ -24,18 +24,12 @@ static ast_node_t* ast_declaration_process(ast_node_t* node) {
 static void ast_declaration_destroy() {
 }
 
-ast_functions_t ast_declaration_provider() {
-    ast_functions_t functions = {
-        .process = ast_declaration_process,
-        .destroy = ast_declaration_destroy};
-
-    return functions;
-}
-
 ast_node_t* create_ast_declaration_node(int type, char* var_name) {
     ast_declaration_node_t * declaration_node = malloc(sizeof(*declaration_node));
 
     declaration_node->type = DECLARATION_TK;
+    declaration_node->process = ast_declaration_process;
+    declaration_node->destroy = ast_declaration_destroy;
 
     declaration_node->value_type = type;
     declaration_node->var_name = var_name;

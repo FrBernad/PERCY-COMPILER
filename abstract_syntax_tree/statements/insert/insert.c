@@ -9,7 +9,9 @@
 
 typedef struct ast_insert_node {
     int type;
-
+    ast_node_t* (*process)(ast_node_t* node);
+    void (*destroy)();
+    
     char* insert_dest;
     char* insert_src;
 
@@ -33,7 +35,7 @@ static ast_node_t* ast_insert_process(ast_node_t* node) {
         init_elements_list(&dest_tag->child_elements);
     }
 
-    insert_element(dest_tag,src_tag);
+    insert_element(dest_tag, src_tag);
 
     return NULL;
 }
@@ -41,18 +43,13 @@ static void ast_insert_destroy() {
 
 }
 
-ast_functions_t ast_insert_provider() {
-    ast_functions_t functions = {
-        .process = ast_insert_process,
-        .destroy = ast_insert_destroy};
-
-    return functions;
-}
-
 ast_node_t* create_ast_insert_node(char* insert_dest, char* insert_src) {
     ast_insert_node_t* insert_node = malloc(sizeof(*insert_node));
 
     insert_node->type = INSERT_MT_TK;
+    insert_node->process = ast_insert_process;
+    insert_node->destroy = ast_insert_destroy;
+
     insert_node->insert_dest = insert_dest;
     insert_node->insert_src = insert_src;
 

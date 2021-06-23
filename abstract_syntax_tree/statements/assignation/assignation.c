@@ -10,6 +10,9 @@
 typedef struct ast_assignation_node {
     int type;
 
+    ast_node_t* (*process)(ast_node_t* node);
+    void (*destroy)();
+
     char* var_name;
     ast_node_t* value;
 
@@ -78,18 +81,12 @@ static ast_node_t* ast_assignation_process(ast_node_t* node) {
 static void ast_assignation_destroy() {
 }
 
-ast_functions_t ast_assignation_provider() {
-    ast_functions_t functions = {
-        .process = ast_assignation_process,
-        .destroy = ast_assignation_destroy};
-
-    return functions;
-}
-
 ast_node_t* create_ast_assignation_node(char* var_name, ast_node_t* value) {
     ast_assignation_node_t* assignation_node = malloc(sizeof(*assignation_node));
 
     assignation_node->type = ASSIGNATION_TK;
+    assignation_node->process = ast_assignation_process;
+    assignation_node->destroy = ast_assignation_destroy;
 
     assignation_node->var_name = var_name;
     assignation_node->value = value;
