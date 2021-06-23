@@ -6,17 +6,6 @@
 #include "abstract_syntax_tree/statements/tags/tags.h"
 
 // STRING VALUE
-typedef struct ast_value_node {
-    int type;
-    union {
-        char* str;
-        int num;
-        ast_node_t* tag;
-        char* reference;
-    } value;
-} ast_value_node_t;
-
-// STRING VALUE
 char* ast_string_value_process(ast_node_t* node) {
     ast_value_node_t* value_node = (ast_value_node_t*)node;
     return value_node->value.str;
@@ -35,15 +24,19 @@ element_t* ast_tag_value_process(ast_node_t* node) {
     ast_tag_node_t* tag = (ast_tag_node_t*)value_node->value.tag;
 
     element_t * element = create_element(tag->type);
-    printf("new element: tag: %s\n", element->name);
+    printf("new element: tag: %s\n\n", element->name);
     return element;
 }
 
 // REFERENCE VALUE
 char* ast_reference_value_process(ast_node_t* node) {
     ast_value_node_t* value_node = (ast_value_node_t*)node;
+
     return value_node->value.reference;
 }
+
+
+
 
 // STRING VALUE
 ast_node_t* create_ast_string_node(char* s) {
@@ -73,7 +66,7 @@ ast_node_t* create_ast_tag_node(ast_node_t* tag) {
 }
 
 // REFERENCE VALUE
-ast_node_t* create_ast_symbol_reference_node(char* s) {
+ast_node_t* create_ast_reference_node(char* s) {
     ast_value_node_t* symbol_reference = malloc(sizeof(*symbol_reference));
     symbol_reference->type = ID;
     symbol_reference->value.reference = s;

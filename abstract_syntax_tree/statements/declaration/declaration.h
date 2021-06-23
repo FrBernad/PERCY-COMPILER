@@ -6,10 +6,9 @@
 
 typedef struct ast_declaration_node {
     int type;
-
-    struct ast_node* var_name;
-    struct ast_node* value;
-
+    
+    int value_type;
+    char* var_name;
 } ast_declaration_node_t;
 
 ast_functions_t ast_declaration_provider();

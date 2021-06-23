@@ -36,8 +36,6 @@ void init_ast_functions() {
 
 void execute_ast(ast_node_t* ast) {
     execute_node(ast);
-
-    
 }
 
 ast_node_t* execute_node(ast_node_t* node){

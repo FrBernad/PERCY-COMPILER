@@ -153,7 +153,7 @@ main(){
                                     }
                                 | ID
                                     {
-                                        $$ = create_ast_symbol_reference_node($1);
+                                        $$ = create_ast_reference_node($1);
                                     }
                                 ;
 

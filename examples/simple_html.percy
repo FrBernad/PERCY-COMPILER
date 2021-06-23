@@ -1,6 +1,9 @@
 main(){
     element aux1 = new html;
-    element aux2 = new html;
+    element aux2;
+    aux2 = new navbar;
     aux1.insert(aux2);
     render(aux1);
 }
+
+

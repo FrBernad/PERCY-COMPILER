@@ -6,6 +6,6 @@
 
 ast_functions_t ast_assignation_provider();
 
-ast_node_t* create_ast_assignation_node(char* symbol, ast_node_t * tag);
+ast_node_t* create_ast_assignation_node(char* var_name, ast_node_t* value);
 
 #endif
