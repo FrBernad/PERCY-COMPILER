@@ -38,9 +38,9 @@
 %token <string_value> STRING_VALUE
 %token <int_value> INT_VALUE
 
-%token <symbol> ID PRINT
+%token <symbol> ID
 
-%type <node> TAG_VALUE TAG STATEMENT STATEMENTS DEFINITION DECLARATION FOR_ASSIGNMENT FOR_STATEMENT DO_WHILE WHILE_STATEMENT PRINT_STATEMENT IF_STATEMENT ASSIGNATION VALUE INSERT_MT EXP PRINTABLE_VALUE
+%type <node> TAG_VALUE TAG STATEMENT STATEMENTS DEFINITION DECLARATION FOR_ASSIGNMENT FOR_STATEMENT DO_WHILE WHILE_STATEMENT IF_STATEMENT ASSIGNATION VALUE INSERT_MT EXP
 %type <token> TYPE 
 %type <symbol> RENDER_CALL 
 
@@ -108,7 +108,6 @@ main(){
                                 | DO_WHILE              { $$ = $1; }
                                 | WHILE_STATEMENT       { $$ = $1; }
                                 | FOR_STATEMENT         { $$ = $1; }
-                                | PRINT_STATEMENT       { $$ = $1; }
                                 ;
                                 
     DEFINITION:                 TYPE ID '=' VALUE
@@ -133,26 +132,6 @@ main(){
     INSERT_MT:                  ID '.' INSERT '(' ID ')' ';'
                                     {
                                         $$ = create_ast_insert_node($1,$5);       
-                                    }
-                                ;
-
-    PRINT_STATEMENT:            PRINT '(' PRINTABLE_VALUE ')' ';'
-                                    {
-                                        $$ = create_ast_print_node($3);       
-                                    }
-                                ;
-    
-    PRINTABLE_VALUE:            INT_VALUE
-                                    {
-                                        $$ = create_ast_int_node($1);
-                                    }
-                                | STRING_VALUE
-                                    {
-                                        $$ = create_ast_string_node($1);
-                                    }
-                                | ID
-                                    {
-                                        $$ = create_ast_reference_node($1);
                                     }
                                 ;
 

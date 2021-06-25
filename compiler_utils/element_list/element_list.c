@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "abstract_syntax_tree/statements/values/values.h"
 #include "abstract_syntax_tree/ast/ast.h"
+#include "abstract_syntax_tree/statements/values/values.h"
 #include "y.tab.h"
 
 static element_list_t elements_list;
@@ -12,7 +12,7 @@ static element_list_t elements_list;
 static void add_to_elements_list(element_t* element);
 static void free_element_list_nodes(element_list_t* list);
 
-static element_node_t * new_element_node(element_t* element) {
+static element_node_t* new_element_node(element_t* element) {
     element_node_t* new_node = calloc(1, sizeof(*new_node));
     new_node->element = element;
     return new_node;
@@ -39,9 +39,9 @@ void init_elements_list(element_list_t** element_list) {
 }
 
 element_t* create_element(ast_tag_node_t* tag_node) {
-    element_t* element = calloc(1,sizeof(*element));
-    
-    if(element == NULL){
+    element_t* element = calloc(1, sizeof(*element));
+
+    if (element == NULL) {
         return NULL;
     }
 
@@ -55,11 +55,11 @@ element_t* create_element(ast_tag_node_t* tag_node) {
         case NAVBAR:
             element->name = "div";
             element->body = ast_string_value_get(tag_node->body);
-            element->style = "";
-            break;
+            element->style = "height:60px;width:100%;background-color:#333;font-size:20px;font-weight:bold;text-align:left;padding: 0 10px;display:flex;justify-items:start;align-content:center;";
+                break;
 
         case FOOTER:
-            element->name = "div";
+            element->name = "footer";
             element->body = ast_string_value_get(tag_node->body);
             element->style = "";
             break;
@@ -71,7 +71,7 @@ element_t* create_element(ast_tag_node_t* tag_node) {
             break;
 
         case HEADER:
-            element->name = "div";
+            element->name = "header";
             element->body = ast_string_value_get(tag_node->body);
             element->style = "";
             break;
@@ -91,7 +91,7 @@ element_t* create_element(ast_tag_node_t* tag_node) {
 static void free_element_list_nodes(element_list_t* list) {
     element_node_t* iter = list->first;
     while (iter != NULL) {
-        if(iter->element->child_elements!=NULL){
+        if (iter->element->child_elements != NULL) {
             free_element_list_nodes(iter->element->child_elements);
         }
         element_node_t* aux;
@@ -101,7 +101,7 @@ static void free_element_list_nodes(element_list_t* list) {
     }
 }
 
-void free_elements(){
+void free_elements() {
     element_node_t* iter = elements_list.first;
     while (iter != NULL) {
         if (iter->element->child_elements != NULL) {

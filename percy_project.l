@@ -27,7 +27,6 @@ ALPHA   [a-zA-Z_]
 "for"                           {return TOKEN(FOR);}
 "do"                            {return TOKEN(DO);}
 "while"                         {return TOKEN(WHILE);}
-"print"                         {return TOKEN(PRINT);}
 
 "render"                        {return TOKEN(RENDER);}
 
