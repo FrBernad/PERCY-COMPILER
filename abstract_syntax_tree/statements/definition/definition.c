@@ -31,13 +31,13 @@ static ast_node_t* ast_definition_process(ast_node_t* node) {
 
     switch (definition->value_type) {
         case INT_TYPE:
-            var->value.num = ast_int_value_process(definition->value);
+            var->value.num = ast_int_value_get(definition->value);
             break;
         case STRING_TYPE:
-            var->value.str = ast_string_value_process(definition->value);
+            var->value.str = ast_string_value_get(definition->value);
             break;
         case ELEMENT_TYPE:
-            var->value.tag = ast_tag_value_process(definition->value);
+            var->value.tag = ast_tag_value_get(definition->value);
             break;
         // case ID:
             // var->value.reference = ast_reference_value_process(definition->value);

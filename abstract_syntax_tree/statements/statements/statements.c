@@ -6,9 +6,7 @@
 #include "abstract_syntax_tree/ast_functions/ast_functions.h"
 
 static ast_node_t* ast_statements_process(ast_node_t* node) {
-    printf("ejecturo left\n\n");
-    ast_node_t* left_statements = execute_node(node->left);
-    printf("ejecturo right\n\n");
+    execute_node(node->left);
     return execute_node(node->right);
 }
 

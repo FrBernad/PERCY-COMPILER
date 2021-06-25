@@ -1,6 +1,6 @@
 CFLAGS+=-std=c99
 
-CFLAGS+=-D_POSIX_C_SOURCE -Wall -g -pedantic -pedantic-errors -Wextra -fsanitize=address
+CFLAGS+=-D_POSIX_C_SOURCE -Wall -g -pedantic -pedantic-errors -Wextra 
 
 CFLAGS+=-O3 
 

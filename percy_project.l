@@ -36,12 +36,13 @@ ALPHA   [a-zA-Z_]
 "for"                           {return TOKEN(FOR);}
 "do"                            {return TOKEN(DO);}
 "while"                         {return TOKEN(WHILE);}
+"print"                         {return TOKEN(PRINT);}
 
 "render"                        {return TOKEN(RENDER);}
 
  /*Logical operators*/
-"&&"                            {return TOKEN(OP_AND);}
-"||"                            {return TOKEN(OP_OR);}
+"&&"                            {return TOKEN(AND);}
+"||"                            {return TOKEN(OR);}
  /*No se si faltaria el !exp o no se como ponerlo*/
 
  /*Elements*/
@@ -60,12 +61,12 @@ ALPHA   [a-zA-Z_]
 
  /*Relational operators*/
 
-">"                             {return TOKEN(OP_GREATER);}
-">="		                    {return TOKEN(OP_GREATER_OR_EQ);}
-"<"                             {return TOKEN(OP_LESS); }
-"<="		                    {return TOKEN(OP_LESS_OR_EQ);}
-"=="		                    {return TOKEN(OP_EQ);}
-"!="                            {return TOKEN(OP_NEQ);}
+">"                             {return TOKEN('>');}
+">="		                    {return TOKEN(GE);}
+"<"                             {return TOKEN('<'); }
+"<="		                    {return TOKEN(LE);}
+"=="		                    {return TOKEN(EQ);}
+"!="                            {return TOKEN(NEQ);}
 
  /*valor*/
 {ALPHA}({ALPHA}|{DIGIT})*       {SAVE_SYMBOL;return ID;}

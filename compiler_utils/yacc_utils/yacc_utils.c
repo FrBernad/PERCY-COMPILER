@@ -8,6 +8,7 @@
 #include "libs/khash/khash.h"
 
 extern FILE *yyin;
+extern int yylineno;
 static FILE *output;
 
 static void render_element(element_t *element, int depth);
@@ -16,7 +17,7 @@ static void body(char *body, int depth);
 static void style(char *style);
 
 void yyerror(char const *s) {
-    printf("Error! %s\n\n", s);
+    printf("Error! %s, line:%d\n\n", s,yylineno);
 }
 
 void init_compiler() {
@@ -31,6 +32,14 @@ void init_compiler() {
         fprintf(stderr,"Excecution cannot continue\n");
         exit(0);
     }
+}
+
+void parse_input_file() {
+    // yyin = fopen("simple_html.percy", "r");
+    // if(yyin == NULL){
+    //     printf("error!!\n");
+    // }
+    yyparse();
 }
 
 void save_function(ast_node_t *function) {

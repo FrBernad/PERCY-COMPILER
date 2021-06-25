@@ -1,9 +1,64 @@
+
 main(){
     element aux1 = new html;
     element aux3 = new navbar("Mi empresa");
+    if(3<1){
+    }else{
     element aux2;
+    }
     aux2 = new container("Mi empresa esta buenisima");
-    aux1.insert(aux3);
     aux1.insert(aux2);
+    aux1.insert(aux3);
+
+    render(aux1);
+}
+
+
+main(){
+    element aux1 = new html;
+
+    print("hola!");
+    print("\n");
+
+    render(aux1);
+}
+
+
+main(){
+    element aux1 = new html;
+
+    int a = 2;
+        
+    int b = a + 3;
+
+    print("\n");
+    print(a);
+    print("\n");
+
+    while(a<b){
+        a = a + 1;
+        print(a);
+        print("\n");
+    }
+
+    render(aux1);
+}
+
+
+
+main(){
+    element aux1 = new html;
+    element aux3 = new navbar("Mi empresa");
+
+    int a = 2;
+            
+    for( int b = a + 3; a < b; a = a+1){
+        aux1.insert(aux3);
+    }
+
+    print("\n");
+    print(a);
+    print("\n");
+
     render(aux1);
 }

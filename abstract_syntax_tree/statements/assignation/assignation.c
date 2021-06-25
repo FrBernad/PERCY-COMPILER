@@ -5,7 +5,6 @@
 
 #include "abstract_syntax_tree/statements/values/values.h"
 #include "hash_maps/variables_hash_map/variables_hash_map.h"
-#include "y.tab.h"
 
 typedef struct ast_assignation_node {
     int type;
@@ -30,13 +29,13 @@ static ast_node_t* ast_assignation_process(ast_node_t* node) {
 
     switch (var->type) {
         case INT_TYPE:
-            var->value.num = ast_int_value_process(assignation->value);
+            var->value.num = ast_int_value_get(assignation->value);
             break;
         case STRING_TYPE:
-            var->value.str = ast_string_value_process(assignation->value);
+            var->value.str = ast_string_value_get(assignation->value);
             break;
         case ELEMENT_TYPE:
-            var->value.tag = ast_tag_value_process(assignation->value);
+            var->value.tag = ast_tag_value_get(assignation->value);
             break;
         default:
             break;

@@ -18,49 +18,45 @@
 }
 
 // The next Section is the Token definitions.  All of them will be DEFINE in y.tab.h
-%token FIRST_TK
-
 /*CONDITIONALS*/
-%token IF ELSE
+%token <token> IF ELSE
 %nonassoc IF ELSE
 
 /*CICLE*/  
-%token FOR DO WHILE
+%token <token> FOR DO WHILE
 
-%token RETURN
+%token <token> RETURN
 
 /*Logical operators*/
 
-%token OP_AND OP_OR
+%token <token> AND OR 
 
 /*No se si faltaria el !exp o no se como ponerlo*/
 
 /*Relational operators*/
 
-%token <token> OP_GREATER OP_GREATER_OR_EQ OP_LESS OP_LESS_OR_EQ OP_EQ OP_NEQ
+%token <token> '-' '+' '*' '/' '<' '>' EQ LE GE NEQ
 
 %token <token> MAIN RENDER ELEMENT_TYPE NEW INT_TYPE STRING_TYPE HTML NAVBAR FOOTER CONTAINER HEADER INSERT
+
 
 %token <string_value> STRING_VALUE
 %token <int_value> INT_VALUE
 
-%token <symbol> ID
+%token <symbol> ID PRINT
 
-%type <node> TAG STATEMENT STATEMENTS DEFINITION DECLARATION ASSIGNATION VALUE INSERT_MT
+%type <node> TAG STATEMENT STATEMENTS DEFINITION DECLARATION FOR_ASSIGNMENT FOR_STATEMENT DO_WHILE WHILE_STATEMENT PRINT_STATEMENT IF_STATEMENT ASSIGNATION VALUE INSERT_MT EXP PRINTABLE_VALUE
 %type <token> TYPE 
 %type <symbol> RENDER_CALL 
 
-%token DECLARATION_TK TAG_TK ASSIGNATION_TK DEFINITION_TK STATEMENTS_TK FUNCTION_TK INSERT_MT_TK
-
+%token DECLARATION_TK TAG_TK ASSIGNATION_TK DEFINITION_TK STATEMENTS_TK FUNCTION_TK INSERT_MT_TK EXP_TK
 
 %right '='
 %left OR AND
-%left '>' '<' LE GE EQ NE
+%left '>' '<' LE GE EQ NEQ
 %left '+' '-'
 %left '*' '/'
 %left '!'
-
-%token LAST_TK
 
 %start PROGRAM
 
@@ -108,26 +104,31 @@ main(){
                                 ;
 
     
-    STATEMENT:                  DEFINITION              { $$ = $1; }
-                                | DECLARATION           { $$ = $1; }
-                                | ASSIGNATION           { $$ = $1; }
+    STATEMENT:                  DEFINITION ';'          { $$ = $1; }
+                                | DECLARATION ';'       { $$ = $1; }
+                                | ASSIGNATION ';'       { $$ = $1; }
                                 | INSERT_MT             { $$ = $1; }
+                                | IF_STATEMENT          { $$ = $1; }
+                                | DO_WHILE              { $$ = $1; }
+                                | WHILE_STATEMENT       { $$ = $1; }
+                                | FOR_STATEMENT         { $$ = $1; }
+                                | PRINT_STATEMENT       { $$ = $1; }
                                 ;
                                 
-    DEFINITION:                 TYPE ID '=' VALUE ';'
+    DEFINITION:                 TYPE ID '=' VALUE
                                     {
                                         $$ = create_ast_definition_node($1,$2,$4);
                                     }
                                 ;
 
-    DECLARATION:                TYPE ID ';'
+    DECLARATION:                TYPE ID
                                     {
                                         $$ = create_ast_declaration_node($1,$2);
                                     }
                                 ;
 
 
-    ASSIGNATION:                ID '=' VALUE ';'
+    ASSIGNATION:                ID '=' VALUE
                                     {
                                         $$ = create_ast_assignation_node($1,$3);       
                                     }
@@ -139,11 +140,13 @@ main(){
                                     }
                                 ;
 
-    VALUE:                      NEW TAG 
+    PRINT_STATEMENT:            PRINT '(' PRINTABLE_VALUE ')' ';'
                                     {
-                                        $$ = create_ast_tag_node($2);
+                                        $$ = create_ast_print_node($3);       
                                     }
-                                | INT_VALUE
+                                ;
+    
+    PRINTABLE_VALUE:            INT_VALUE
                                     {
                                         $$ = create_ast_int_node($1);
                                     }
@@ -154,6 +157,113 @@ main(){
                                 | ID
                                     {
                                         $$ = create_ast_reference_node($1);
+                                    }
+                                ;
+
+    IF_STATEMENT:               IF '(' EXP ')' '{' STATEMENTS '}' ELSE '{' STATEMENTS '}'
+                                    {
+                                        $$ = create_ast_if_node($3,$6,$10);
+                                    }
+                                | IF '(' EXP ')' '{' STATEMENTS '}'
+                                    {
+                                        $$ = create_ast_if_node($3,$6,NULL);
+                                    }
+                                ;
+
+    FOR_STATEMENT:              FOR '(' FOR_ASSIGNMENT ';' EXP ';' FOR_ASSIGNMENT ')' '{' STATEMENTS '}'
+                                    {
+                                        $$ = create_ast_for_node($3,$5,$10,$7);
+                                    }
+                                ;  
+    
+    FOR_ASSIGNMENT:             ASSIGNATION     { $$ = $1; }
+                                | DECLARATION   { $$ = $1; }
+                                | DEFINITION    { $$ = $1; }
+                                |               { $$ = NULL;}
+                                ;  
+    
+
+    DO_WHILE:                   DO '{' STATEMENTS '}' WHILE '(' EXP ')' ';'
+                                    {
+                                            $$ = create_ast_do_while_node($7,$3);
+                                    }
+                                ;
+
+    WHILE_STATEMENT:            WHILE '(' EXP ')' '{' STATEMENTS '}'
+                                    {
+                                            $$ = create_ast_while_node($3,$6);
+                                    }
+                                ;
+    
+    EXP:                        EXP '+' EXP 
+                                    {
+                                        $$ = create_ast_expression_node('+',$1,$3);
+                                    }
+                                | EXP '-' EXP
+                                    {
+                                        $$ = create_ast_expression_node('-',$1,$3);
+                                    }
+                                | EXP '*' EXP
+                                    {
+                                        $$ = create_ast_expression_node('*',$1,$3);
+                                    }
+                                | EXP '/' EXP
+                                    {
+                                        $$ = create_ast_expression_node('/',$1,$3);
+                                    }
+                                | EXP '<' EXP
+                                    {
+                                        $$ = create_ast_expression_node('<',$1,$3);
+                                    }
+                                | EXP '>' EXP
+                                    {
+                                        $$ = create_ast_expression_node('>',$1,$3);
+                                    }
+                                | EXP LE EXP
+                                    {
+                                        $$ = create_ast_expression_node($2,$1,$3);
+                                    }
+                                | EXP GE EXP
+                                    {
+                                        $$ = create_ast_expression_node($2,$1,$3);
+                                    }
+                                | EXP EQ EXP
+                                    {
+                                        $$ = create_ast_expression_node($2,$1,$3);
+                                    }
+                                | EXP NEQ EXP
+                                    {
+                                        $$ = create_ast_expression_node($2,$1,$3);
+                                    }
+                                | EXP OR EXP
+                                    {
+                                        $$ = create_ast_expression_node($2,$1,$3);
+                                    }
+                                | EXP AND EXP
+                                    {
+                                        $$ = create_ast_expression_node($2,$1,$3);
+                                    }
+                                | ID  
+                                    {
+                                        $$ = create_ast_reference_node($1);
+                                    }
+                                | INT_VALUE
+                                    {
+                                        $$ = create_ast_int_node($1);
+                                    }
+                                ; 
+
+    VALUE:                      NEW TAG 
+                                    {
+                                        $$ = create_ast_tag_node($2);
+                                    }
+                                | STRING_VALUE
+                                    {
+                                        $$ = create_ast_string_node($1);
+                                    }
+                                | EXP 
+                                    {
+                                        $$ = create_ast_exp_node($1);
                                     }
                                 ;
 
@@ -197,16 +307,10 @@ main(){
 %%
 
 int main(int argc, char const *argv[]){
-    
 
-    //1° PARSEAR argumentos
-    /*2° INISIALIZAR TREE, TABLE, ETC*/ init_compiler();
-    //3° PARSEAR INPUT PERCY
-    //4° ANALISIS SEMANTICO, GUARDADO DE VARIABLES
-    //5° RENDER (a partir de root)
-    //6° LIBERAR RECURSOS, CERRAR COSAS*/
+    init_compiler();
 
-    yyparse();
+    parse_input_file();
 
     execute_main_function();
 

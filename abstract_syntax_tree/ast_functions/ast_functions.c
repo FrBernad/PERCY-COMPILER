@@ -10,6 +10,6 @@ ast_node_t* execute_node(ast_node_t* node){
     if(node==NULL){
         return NULL;
     }
-    printf("node type:%d\n",node->type);
+    // printf("\n\nnode type:%d\n\n",node->type);
     return node->process(node);
 }
