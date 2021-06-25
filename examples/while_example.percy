@@ -1,0 +1,14 @@
+main(){
+    element aux1 = new html;
+    element aux3 = new navbar("Mi empresa");
+
+    int a = 2;
+    int b = a + 3;
+
+    while(a < b){
+        aux1.insert(aux3);
+        a = a+1 ;
+    }
+
+    render(aux1);
+}

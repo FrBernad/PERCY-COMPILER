@@ -18,7 +18,15 @@ typedef struct ast_if_node {
 
 static ast_node_t* ast_if_process(ast_node_t* node) {
     ast_if_node_t* if_node = (ast_if_node_t*)node;
-    if (ast_int_value_get(execute_node(if_node->if_condition))) {
+
+    int val;
+    ast_node_t* int_node = execute_node(if_node->if_condition);
+    val = ast_int_value_get(int_node);
+    if (if_node->if_condition->type != INT_VALUE && if_node->if_condition->type != ID) {
+        free_node(int_node);
+    }
+
+    if (val) {
         if(if_node->if_statements!=NULL){
             execute_node(if_node->if_statements);
         }
@@ -28,7 +36,14 @@ static ast_node_t* ast_if_process(ast_node_t* node) {
     return NULL;
 }
 
-static void ast_if_destroy() {
+static void ast_if_destroy(ast_node_t * node) {
+    ast_if_node_t* if_node = (ast_if_node_t*)node;
+
+    free_node(if_node->if_condition);
+    free_node(if_node->if_statements);
+    free_node(if_node->else_statements);
+
+    free(if_node);
 }
 
 ast_node_t* create_ast_if_node(ast_node_t* condition, ast_node_t* if_statements, ast_node_t* else_statements) {

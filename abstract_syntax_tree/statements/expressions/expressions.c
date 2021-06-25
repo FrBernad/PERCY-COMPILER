@@ -10,13 +10,27 @@ static int process_expression_value(int left, int right, int type);
 // ---
 
 static ast_node_t* ast_exp_process(ast_node_t* node) {
-    int left = ast_int_value_get(execute_node(node->left));
-    int right = ast_int_value_get(execute_node(node->right));
+    ast_node_t* int_node = execute_node(node->left);
+    int left = ast_int_value_get(int_node);
+    if (node->left->type != INT_VALUE && node->left->type != ID) {
+        free_node(int_node);
+    }
+
+    int_node = execute_node(node->right);
+    int right = ast_int_value_get(int_node);
+    if (node->right->type != INT_VALUE && node->right->type != ID) {
+        free_node(int_node);
+    }
 
     return create_ast_int_node(process_expression_value(left, right, node->type));
 }
 
-static void ast_exp_destroy() {
+static void ast_exp_destroy(ast_node_t* node) {
+    ast_expression_node_t* exp_node = (ast_expression_node_t*)node;
+    free_node(exp_node->left);
+    free_node(exp_node->right);
+
+    free(exp_node);
 }
 
 // ---
@@ -56,6 +70,9 @@ static int process_expression_value(int left, int right, int type) {
             break;
         case '>':
             ret_val = left > right;
+            break;
+        case '%':
+            ret_val = left % right;
             break;
         case LE:
             ret_val = left <= right;

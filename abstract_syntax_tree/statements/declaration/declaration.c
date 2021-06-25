@@ -5,7 +5,6 @@
 
 #include "abstract_syntax_tree/statements/values/values.h"
 #include "hash_maps/variables_hash_map/variables_hash_map.h"
-#include "y.tab.h"
 
 static ast_node_t* ast_declaration_process(ast_node_t* node) {
     ast_declaration_node_t* declaration = (ast_declaration_node_t*)node;
@@ -21,7 +20,9 @@ static ast_node_t* ast_declaration_process(ast_node_t* node) {
     return NULL;
 }
 
-static void ast_declaration_destroy() {
+static void ast_declaration_destroy(ast_node_t* node) {
+    ast_declaration_node_t* declaration = (ast_declaration_node_t*)node;
+    free(declaration);
 }
 
 ast_node_t* create_ast_declaration_node(int type, char* var_name) {

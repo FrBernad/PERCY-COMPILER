@@ -8,8 +8,8 @@
 typedef struct ast_value_node {
     int type;
     ast_node_t* (*process)(ast_node_t* node);
-    void (*destroy)();
-    
+    void (*destroy)(ast_node_t* node);
+
     union {
         char* str;
         int num;

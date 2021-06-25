@@ -7,7 +7,7 @@
 typedef struct ast_expression_node {
     int type;
     ast_node_t* (*process)(ast_node_t* node);
-    void (*destroy)();
+    void (*destroy)(ast_node_t* node);
 
     ast_node_t* left;
     ast_node_t* right;

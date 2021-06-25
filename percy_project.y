@@ -1,8 +1,5 @@
 %{
-
 #include "compiler_utils/yacc_utils/yacc_utils.h"
-
-/* All the headers that you put here will be added to the output C file on top.*/
 %}
 
 %union {
@@ -25,8 +22,6 @@
 /*CICLE*/  
 %token <token> FOR DO WHILE
 
-%token <token> RETURN
-
 /*Logical operators*/
 
 %token <token> AND OR 
@@ -45,7 +40,7 @@
 
 %token <symbol> ID PRINT
 
-%type <node> TAG STATEMENT STATEMENTS DEFINITION DECLARATION FOR_ASSIGNMENT FOR_STATEMENT DO_WHILE WHILE_STATEMENT PRINT_STATEMENT IF_STATEMENT ASSIGNATION VALUE INSERT_MT EXP PRINTABLE_VALUE
+%type <node> TAG_VALUE TAG STATEMENT STATEMENTS DEFINITION DECLARATION FOR_ASSIGNMENT FOR_STATEMENT DO_WHILE WHILE_STATEMENT PRINT_STATEMENT IF_STATEMENT ASSIGNATION VALUE INSERT_MT EXP PRINTABLE_VALUE
 %type <token> TYPE 
 %type <symbol> RENDER_CALL 
 
@@ -55,8 +50,9 @@
 %left OR AND
 %left '>' '<' LE GE EQ NEQ
 %left '+' '-'
-%left '*' '/'
-%left '!'
+%left '*' '/' '%'
+%left ')'
+%right '('
 
 %start PROGRAM
 
@@ -219,6 +215,10 @@ main(){
                                     {
                                         $$ = create_ast_expression_node('>',$1,$3);
                                     }
+                                | EXP '%' EXP
+                                    {
+                                        $$ = create_ast_expression_node('%',$1,$3);
+                                    }
                                 | EXP LE EXP
                                     {
                                         $$ = create_ast_expression_node($2,$1,$3);
@@ -242,6 +242,10 @@ main(){
                                 | EXP AND EXP
                                     {
                                         $$ = create_ast_expression_node($2,$1,$3);
+                                    }
+                                | '(' EXP ')'
+                                    {
+                                        $$ = $2;
                                     }
                                 | ID  
                                     {
@@ -271,24 +275,36 @@ main(){
                                     {
                                         $$ = create_ast_html_tag_node();
                                     }
-                                | NAVBAR '(' STRING_VALUE ')'
+                                | NAVBAR '(' TAG_VALUE ')'
                                     {
                                         $$ = create_ast_navbar_tag_node($3);
                                     }
-                                | FOOTER '(' STRING_VALUE ')'
+                                | FOOTER '(' TAG_VALUE ')'
                                     {
                                         $$ = create_ast_footer_tag_node($3);
                                     }
-                                | CONTAINER '(' STRING_VALUE ')'
+                                | CONTAINER '(' TAG_VALUE ')'
                                     {
                                         $$ = create_ast_container_tag_node($3);
                                     }
-                                | HEADER '(' STRING_VALUE ')'
+                                | HEADER '(' TAG_VALUE ')'
                                     {
                                         $$ = create_ast_header_tag_node($3);
                                     }
                                 ;
-
+    TAG_VALUE:                  STRING_VALUE
+                                    {
+                                        $$ = create_ast_string_node($1);
+                                    }
+                                | ID  
+                                    {
+                                        $$ = create_ast_reference_node($1);
+                                    }
+                                | INT_VALUE
+                                    {
+                                        $$ = create_ast_int_node($1);
+                                    }
+                                    ;
     TYPE:                        ELEMENT_TYPE 
                                     {
                                         $$ = $1;
@@ -306,13 +322,19 @@ main(){
 
 %%
 
-int main(int argc, char const *argv[]){
+int main(int argc, char *argv[]){
+void parse_args(int argc, char** argv, struct percy_args* args);
+    struct percy_args args;
 
-    init_compiler();
+    parse_args(argc,argv,&args);
+
+    init_compiler(args);
 
     parse_input_file();
 
     execute_main_function();
+
+    free_resources();
 
     return 0;
 }

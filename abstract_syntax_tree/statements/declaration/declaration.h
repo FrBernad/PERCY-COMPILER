@@ -7,7 +7,7 @@
 typedef struct ast_declaration_node {
     int type;
     ast_node_t* (*process)(ast_node_t* node);
-    void (*destroy)();
+    void (*destroy)(ast_node_t* node);
 
     int value_type;
     char* var_name;

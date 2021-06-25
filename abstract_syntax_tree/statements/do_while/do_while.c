@@ -8,7 +8,7 @@
 typedef struct ast_do_while_node {
     int type;
     ast_node_t* (*process)(ast_node_t* node);
-    void (*destroy)();
+    void (*destroy)(ast_node_t* node);
 
     ast_node_t* condition;
     ast_node_t* statements;
@@ -17,15 +17,27 @@ typedef struct ast_do_while_node {
 
 static ast_node_t* ast_do_while_process(ast_node_t* node) {
     ast_do_while_node_t* do_while_node = (ast_do_while_node_t*)node;
+    int val;
     do {
         if (do_while_node->statements != NULL) {
             execute_node(do_while_node->statements);
         }
-    } while (ast_int_value_get(execute_node(do_while_node->condition)));
+        ast_node_t* int_node = execute_node(do_while_node->condition);
+        val = ast_int_value_get(int_node);
+        if (do_while_node->condition->type != INT_VALUE && do_while_node->condition->type != ID) {
+            free_node(int_node);
+        }
+    } while (val);
     return NULL;
 }
 
-static void ast_do_while_destroy() {
+static void ast_do_while_destroy(ast_node_t* node) {
+    ast_do_while_node_t* do_while_node = (ast_do_while_node_t*)node;
+
+    free_node(do_while_node->condition);
+    free_node(do_while_node->statements);
+
+    free(do_while_node);
 }
 
 ast_node_t* create_ast_do_while_node(ast_node_t* condition, ast_node_t* statements) {

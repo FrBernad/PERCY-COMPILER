@@ -6,8 +6,8 @@ struct ast_node;
 typedef struct ast_node {
     int type;
     struct ast_node* (*process)(struct ast_node* node);
-    void (*destroy)();
-    
+    void (*destroy)(struct ast_node* node);
+
     struct ast_node* left;
     struct ast_node* right;
 } ast_node_t;

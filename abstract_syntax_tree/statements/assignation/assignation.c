@@ -10,7 +10,7 @@ typedef struct ast_assignation_node {
     int type;
 
     ast_node_t* (*process)(ast_node_t* node);
-    void (*destroy)();
+    void (*destroy)(ast_node_t* node);
 
     char* var_name;
     ast_node_t* value;
@@ -44,40 +44,12 @@ static ast_node_t* ast_assignation_process(ast_node_t* node) {
     printf("Var assignation: name: %s\ttype: %d\n", assignation->var_name, assignation->value->type);
 
     return NULL;
-    // if(var->type == ID){
-    //     char* reference_name = ((ast_value_node_t*)assignation->value)->value.reference;
-
-    //     var_t* reference_var = variables_hash_map_get(reference_name);
-
-    //     if (reference_var == NULL || reference_var->type != var->type){
-    //         printf("reference is not defined or types incompatible\n");
-    //         return NULL;
-    //     }
-
-    //     switch (var->type) {
-    //         case INT_VALUE:
-    //             var->value.num = ast_int_value_process(definition->value);
-    //             break;
-    //         case STRING_VALUE:
-    //             var->value.str = ast_string_value_process(definition->value);
-    //             break;
-    //         case ELEMENT_TYPE:
-    //             var->value.tag = ast_tag_value_process(definition->value);
-    //             break;
-    //         case ID:
-    //             var->value.reference = ast_reference_value_process(definition->value);
-    //             break;
-    //         default:
-    //             printf("Invalid type");
-    //             break;
-    //     }
-    // }
-
 }
 
-// ASSIGNATION:                ID '=' VALUE ';'
-
-static void ast_assignation_destroy() {
+static void ast_assignation_destroy(ast_node_t* node){
+    ast_assignation_node_t* assignation_node = (ast_assignation_node_t*)node;
+    free_node(assignation_node->value);
+    free(assignation_node);
 }
 
 ast_node_t* create_ast_assignation_node(char* var_name, ast_node_t* value) {

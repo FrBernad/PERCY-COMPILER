@@ -1,0 +1,19 @@
+main(){
+    element aux1 = new html;
+
+    int a = 0;
+    int b = 0;    
+
+    element aux2;
+
+    while(a<6){
+        if(b%2==0){
+            aux2 = new container(b);
+            aux1.insert(aux2);
+        }
+        a = a+1;
+        b = b+1;
+    }
+
+    render(aux1);
+}

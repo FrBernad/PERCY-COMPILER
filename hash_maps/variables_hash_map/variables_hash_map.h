@@ -18,6 +18,8 @@ typedef struct var {
 
 void init_variables_hash_map();
 
+void free_variables_hash_map();
+
 var_t* variables_hash_map_put(char* var_name, int type);
 
 bool variables_hash_map_exists(char* var_name);

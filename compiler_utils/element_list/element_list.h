@@ -28,4 +28,6 @@ element_t* create_element(ast_tag_node_t* tag_node);
 
 void init_elements_list(element_list_t** element_list);
 
+void free_elements();
+
 #endif

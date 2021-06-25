@@ -3,8 +3,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "abstract_syntax_tree/statements/values/values.h"
 #include "abstract_syntax_tree/ast/ast.h"
 #include "y.tab.h"
+
+static element_list_t elements_list;
+
+static void add_to_elements_list(element_t* element);
+static void free_element_list_nodes(element_list_t* list);
 
 static element_node_t * new_element_node(element_t* element) {
     element_node_t* new_node = calloc(1, sizeof(*new_node));
@@ -42,31 +48,31 @@ element_t* create_element(ast_tag_node_t* tag_node) {
     switch (tag_node->type) {
         case HTML:
             element->name = "html";
-            element->body = tag_node->body;
+            element->body = NULL;
             element->style = NULL;
             break;
 
         case NAVBAR:
             element->name = "div";
-            element->body = tag_node->body;
+            element->body = ast_string_value_get(tag_node->body);
             element->style = "";
             break;
 
         case FOOTER:
             element->name = "div";
-            element->body = tag_node->body;
+            element->body = ast_string_value_get(tag_node->body);
             element->style = "";
             break;
 
         case CONTAINER:
             element->name = "div";
-            element->body = tag_node->body;
+            element->body = ast_string_value_get(tag_node->body);
             element->style = "";
             break;
 
         case HEADER:
             element->name = "div";
-            element->body = tag_node->body;
+            element->body = ast_string_value_get(tag_node->body);
             element->style = "";
             break;
 
@@ -77,5 +83,48 @@ element_t* create_element(ast_tag_node_t* tag_node) {
             break;
     }
 
+    add_to_elements_list(element);
+
     return element;
+}
+
+static void free_element_list_nodes(element_list_t* list) {
+    element_node_t* iter = list->first;
+    while (iter != NULL) {
+        if(iter->element->child_elements!=NULL){
+            free_element_list_nodes(iter->element->child_elements);
+        }
+        element_node_t* aux;
+        aux = iter;
+        iter = iter->next;
+        free(aux);
+    }
+}
+
+void free_elements(){
+    element_node_t* iter = elements_list.first;
+    while (iter != NULL) {
+        if (iter->element->child_elements != NULL) {
+            free_element_list_nodes(iter->element->child_elements);
+            free(iter->element->child_elements);
+        }
+        free(iter->element);
+        element_node_t* aux;
+        aux = iter;
+        iter = iter->next;
+        free(aux);
+    }
+}
+
+static void add_to_elements_list(element_t* element) {
+    element_node_t* new_node = new_element_node(element);
+
+    if (elements_list.first == NULL && elements_list.last == NULL) {
+        elements_list.first = new_node;
+        elements_list.last = elements_list.first;
+        return;
+    }
+
+    elements_list.last->next = new_node;
+    elements_list.last = new_node;
 }

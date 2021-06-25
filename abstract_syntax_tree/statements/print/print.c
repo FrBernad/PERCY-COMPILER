@@ -10,7 +10,7 @@
 typedef struct ast_print_node {
     int type;
     ast_node_t* (*process)(ast_node_t* node);
-    void (*destroy)();
+    void (*destroy)(ast_node_t* node);
 
     ast_node_t* value;
 
@@ -67,7 +67,9 @@ static void print_reference_value(ast_value_node_t* value) {
     }
 }
 
-static void ast_print_destroy() {
+static void ast_print_destroy(ast_node_t * node) {
+    ast_print_node_t* print_node = (ast_print_node_t*)print_node;
+    free(print_node);
 }
 
 ast_node_t* create_ast_print_node(ast_node_t* value) {

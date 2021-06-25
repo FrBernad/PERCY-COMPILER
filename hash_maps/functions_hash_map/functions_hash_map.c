@@ -12,6 +12,10 @@ void init_functions_hash_map() {
     functions_hm = kh_init(functions_hash_map);
 }
 
+void free_functions_hash_map() {
+    kh_destroy(functions_hash_map, functions_hm);
+}
+
 bool functions_hash_map_put(char* function_name, ast_function_node_t* function) {
     if (!functions_hash_map_exists(function_name)) {
         int ret;

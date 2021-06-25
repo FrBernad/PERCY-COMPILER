@@ -6,7 +6,11 @@ static ast_node_t* ast_function_process(ast_node_t* node) {
     return NULL;
 }
 
-static void ast_function_destroy() {
+static void ast_function_destroy(ast_node_t* node) {
+    ast_function_node_t* function_node = (ast_function_node_t*) node;
+
+    free_node(function_node->statements);
+    free(function_node);
 }
 
 ast_node_t* create_ast_function_node(char* function_name, ast_node_t* statements, char* render_var) {

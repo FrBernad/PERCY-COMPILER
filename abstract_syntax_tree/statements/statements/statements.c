@@ -10,7 +10,11 @@ static ast_node_t* ast_statements_process(ast_node_t* node) {
     return execute_node(node->right);
 }
 
-static void ast_statements_destroy() {
+static void ast_statements_destroy(ast_node_t * node) {
+    free_node(node->left);
+    free_node(node->right);
+
+    free(node);
 }
 
 ast_node_t* create_ast_statements_node(ast_node_t* left, ast_node_t* right) {

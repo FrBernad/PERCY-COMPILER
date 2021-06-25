@@ -10,8 +10,8 @@
 typedef struct ast_definition_node {
     int type;
     ast_node_t* (*process)(ast_node_t* node);
-    void (*destroy)();
-    
+    void (*destroy)(ast_node_t* node);
+
     int value_type;
 
     char* var_name;
@@ -39,9 +39,6 @@ static ast_node_t* ast_definition_process(ast_node_t* node) {
         case ELEMENT_TYPE:
             var->value.tag = ast_tag_value_get(definition->value);
             break;
-        // case ID:
-            // var->value.reference = ast_reference_value_process(definition->value);
-            // break;
         default:
             printf("Invalid type");
             break;
@@ -50,7 +47,10 @@ static ast_node_t* ast_definition_process(ast_node_t* node) {
     return NULL;
 }
 
-static void ast_definition_destroy() {
+static void ast_definition_destroy(ast_node_t* node) {
+    ast_definition_node_t* definition = (ast_definition_node_t*)node;
+    free_node(definition->value);
+    free(definition);
 }
 
 ast_node_t* create_ast_definition_node(int type, char* name, ast_node_t* value) {

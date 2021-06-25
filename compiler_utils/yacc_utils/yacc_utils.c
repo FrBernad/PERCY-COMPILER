@@ -3,13 +3,16 @@
 #include <stdio.h>
 
 #include "compiler_utils/element_list/element_list.h"
+#include "compiler_utils/lex_utils/lex_utils.h"
 #include "hash_maps/functions_hash_map/functions_hash_map.h"
 #include "hash_maps/variables_hash_map/variables_hash_map.h"
 #include "libs/khash/khash.h"
 
-extern FILE *yyin;
 extern int yylineno;
+extern FILE *yyin;
 static FILE *output;
+
+static struct percy_args percy_args;
 
 static void render_element(element_t *element, int depth);
 static void indent(int depth);
@@ -17,29 +20,49 @@ static void body(char *body, int depth);
 static void style(char *style);
 
 void yyerror(char const *s) {
-    printf("Error! %s, line:%d\n\n", s,yylineno);
+    printf("Error! %s, line:%d\n\n", s, yylineno);
+    exit(0);
 }
 
-void init_compiler() {
-
+void init_compiler(struct percy_args args) {
+    percy_args = args;
+    init_lex();
     init_functions_hash_map();
     init_variables_hash_map();
 
-    output = fopen("percy_output.html","w");
-
-    if(output == NULL){
+    output = fopen(percy_args.file_out, "w");
+    if (output == NULL) {
         perror("Error at opening file\n");
-        fprintf(stderr,"Excecution cannot continue\n");
+        fprintf(stderr, "Excecution cannot continue\n");
         exit(0);
     }
 }
 
 void parse_input_file() {
-    // yyin = fopen("simple_html.percy", "r");
-    // if(yyin == NULL){
-    //     printf("error!!\n");
-    // }
+    FILE *input_file = fopen(percy_args.file_in, "r");
+    if (input_file == NULL) {
+        printf("error!!\n");
+        exit(0);
+    }
+    
+    // set lex to read from it instead of defaulting to STDIN:
+    yyin = input_file;
     yyparse();
+}
+
+void free_resources(){
+    ast_function_node_t *main_function = functions_hash_map_get("main");
+
+    if (main_function == NULL) {
+        printf("NO HAY MAIN!!!!\n\n");
+    }
+
+    free_ast((ast_node_t *)main_function);
+
+    free_elements();
+    free_lex_resources();
+    free_functions_hash_map();
+    free_variables_hash_map();
 }
 
 void save_function(ast_node_t *function) {
@@ -104,8 +127,8 @@ static void body(char *body, int depth) {
     }
 }
 
-static void style(char * style){
-    if(style!=NULL){
+static void style(char *style) {
+    if (style != NULL) {
         fprintf(output, " style=\"%s\"", style);
     }
 }

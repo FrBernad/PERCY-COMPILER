@@ -11,6 +11,12 @@ void init_variables_hash_map() {
     variables_hm = kh_init(variables_hash_map);
 }
 
+void free_variables_hash_map() {
+    var_t* var;
+    kh_foreach_value(variables_hm, var, free(var));
+    kh_destroy(variables_hash_map, variables_hm);
+}
+
 var_t* variables_hash_map_put(char* var_name, int type) {
     if (!variables_hash_map_exists(var_name)) {
 

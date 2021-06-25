@@ -3,21 +3,12 @@
 /* Auxiliary declarations start here*/
 %{
 #include "compiler_utils/lex_utils/lex_utils.h"
-#include "compiler_utils/yacc_utils/yacc_utils.h"
-
-#include "y.tab.h"
-#include <stdio.h>
-
-#define TOKEN(t) (yylval.token = t)
-#define SAVE_SYMBOL yylval.symbol = new_lex_string(yytext,yyleng);
-#define SAVE_STRING_LITERAL(t,l) yylval.string_value = new_lex_string(t+1,yyleng-2);
-#define SAVE_INT yylval.int_value = atoi(yytext);
-
 %}
 
 /*Auxiliary declarations end & Regular definitions start here*/
 
-%option nounput noinput yylineno
+%option nounput noinput
+%option yylineno
 %option warn nodefault
 
 DIGIT   [0-9] 
@@ -43,7 +34,6 @@ ALPHA   [a-zA-Z_]
  /*Logical operators*/
 "&&"                            {return TOKEN(AND);}
 "||"                            {return TOKEN(OR);}
- /*No se si faltaria el !exp o no se como ponerlo*/
 
  /*Elements*/
 "main"                          {return TOKEN(MAIN);}
@@ -74,7 +64,7 @@ ALPHA   [a-zA-Z_]
 0|[1-9]{DIGIT}*                 {SAVE_INT;return INT_VALUE;}
 \"([^\\"\n]|\\.)*\"				{SAVE_STRING_LITERAL(yytext,yyleng); return STRING_VALUE;}
 
-[ \t\n]                         {}
+[ \t\v\f\n]                     {}
 
 .                               {return yytext[0];}
 

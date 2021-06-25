@@ -7,7 +7,7 @@
 typedef struct ast_function_node {
     int type;
     ast_node_t* (*process)(ast_node_t* node);
-    void (*destroy)();
+    void (*destroy)(ast_node_t* node);
 
     char* name;
     ast_node_t* statements;

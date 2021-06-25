@@ -10,6 +10,18 @@ ast_node_t* execute_node(ast_node_t* node){
     if(node==NULL){
         return NULL;
     }
-    // printf("\n\nnode type:%d\n\n",node->type);
+
     return node->process(node);
+}
+
+void free_ast(ast_node_t* node) {
+    free_node(node);
+}
+
+void free_node(ast_node_t* node) {
+    if (node == NULL) {
+        return;
+    }
+
+    node->destroy(node);
 }
