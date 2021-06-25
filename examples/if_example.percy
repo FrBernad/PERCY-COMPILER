@@ -8,9 +8,9 @@ main(){
     element aux2;
     }
     
-    aux2 = new container("Mi empresa esta buenisima");
-    aux1.insert(aux2);
+    aux2 = new footer("sisi");
     aux1.insert(aux3);
+    aux1.insert(aux2);
 
     render(aux1);
 }

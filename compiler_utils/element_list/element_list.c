@@ -56,12 +56,12 @@ element_t* create_element(ast_tag_node_t* tag_node) {
             element->name = "div";
             element->body = ast_string_value_get(tag_node->body);
             element->style = "height:60px;width:100%;background-color:#333;font-size:20px;font-weight:bold;text-align:left;padding: 0 10px;display:flex;justify-items:start;align-content:center;";
-                break;
+            break;
 
         case FOOTER:
             element->name = "footer";
             element->body = ast_string_value_get(tag_node->body);
-            element->style = "";
+            element->style = "position:absolute;bottom:0;height:100px;width:100%;background-color:#333;font-size:20px;font-weight:bold;text-align:center;padding: 0 10px;display:flex;justify-items:start;align-content:center;";
             break;
 
         case CONTAINER:
