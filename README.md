@@ -1,8 +1,3 @@
-# Percy
-
-**PercyCompiler** is a simple compiler implemented with Lex and Yacc for the language **PercyLenguage**. Which is a strongly-typed language that uses a syntax similar to Javascript. This language allows you to generate exportable .html files from simple instructions
-
-
 ## Authors
 
 - [Francisco Bernad](https://github.com/FrBernad)
@@ -10,14 +5,14 @@
 - [Agustín Manfredi](https://github.com/imanfredi)
 - [Joaquín Legammare](https://github.com/JoacoLega)
 
+# Percy
 
-The report can be found in the root directory under the name `informe.pdf`.
+**PercyCompiler** is a simple compiler implemented with Lex and Yacc for the **PercyLenguage** language. The **PercyLenguage** is a ***strongly-typed*** language that uses a syntax similar to javascript. This language allows you to generate simple ***static html*** files.
 
 ## Compilation
 
-To generate the executables and non-source files of the project, we dicided to use the GNU make tool. Standing on the root project folder run the command `make all` to compile. This will ejecute Lex, Yacc and will make the compilation of the genereated files afterwards.
-
-Also you can clean all the generated files by the `make all` command by running `make clean`.
+To generate the ***compiler executable***, standing on the root project folder run the command `make all`. This will generate the ***percy*** compiler executable.
+To ***remove*** all the generated files, run the `make clean` command.
 
 ## How to use it ?
 
@@ -25,25 +20,25 @@ Also you can clean all the generated files by the `make all` command by running 
                 OPTION:
                     -h                                 Prints the help and finishes.
                     -v                                 Prints the version and finishes.
-                    -i <input-file>                    Sets the file to process.
-                    -o <output-file>                   Sets the output result file. The default is 'a.percyout',
+                    -i <input-file>                    Sets the file to process, must have the '.percy' extension.
+                    -o <output-file>                   Sets the output result file. The default is 'a.percyout'.
 
 
 ## Examples
 
-In `/examples` directory you will find some examples of the PercyLenguaje syntax and the functionality of the PercyCompiler:
+In the `/examples` directory you can find some examples of the PercyLenguaje syntax and functionality:
 
-- `do_while_example.percy` : shows the syntax of the "do while" cycle and how it works. It renders an html tag , and three navbars in the .html file.
+- `do_while_example.percy`: shows the syntax and functionality of the "do while" cycle.
 
-- `even_numbers_example.percy` : is a little implementation of a program that renders an html tag with the even numbers that are included in the range [0-6] in the .html file.
+- `even_numbers_example.percy`: this file renders the first 6 even numbers.
 
-- `or_example.percy` :  shows the syntax of the "for" cycle and how it works. It renders an html tag , and three navbars in the .html file.
+- `for_example.percy`: shows the syntax and functionality of the "for" cycle.
 
-- `if_example.percy `: shows a simple example to display the syntax of an if statement.
+- `if_example.percy `: shows the syntax and functionality of the "if-else" statement.
 
-- `while_example.percy`: shows the syntax of the "while" cycle and how it works. It renders an html tag , and three navbars in the .html file.
+- `while_example.percy`: shows the syntax and functionality of the "while" cycle.
 
 ## Libraries
 
-The only library used in the project that was not made by the developer team and needs to be mentioned is [Khash](https://github.com/attractivechaos/klib/blob/master/khash.h).
+- [Khash](https://github.com/attractivechaos/klib/blob/master/khash.h)
 

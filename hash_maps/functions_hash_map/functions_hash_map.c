@@ -8,11 +8,11 @@ KHASH_MAP_INIT_STR(functions_hash_map, ast_function_node_t*)
 
 static khash_t(functions_hash_map) * functions_hm;
 
-void init_functions_hash_map() {
+void init_functions_hash_map(void) {
     functions_hm = kh_init(functions_hash_map);
 }
 
-void free_functions_hash_map() {
+void free_functions_hash_map(void) {
     kh_destroy(functions_hash_map, functions_hm);
 }
 

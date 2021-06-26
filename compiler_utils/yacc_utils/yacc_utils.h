@@ -27,9 +27,9 @@ void init_compiler(struct percy_args args);
 
 void save_function(ast_node_t *function);
 
-void parse_input_file();
+void parse_input_file(void);
 
-void execute_main_function();
+void execute_main_function(void);
 
 void free_resources(int error);
 

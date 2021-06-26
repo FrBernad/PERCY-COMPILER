@@ -10,11 +10,11 @@ KHASH_MAP_INIT_STR(strings_hash_map, char*)
 
 static khash_t(strings_hash_map) * strings_hm;
 
-void init_lex() {
+void init_lex(void) {
     strings_hm = kh_init(strings_hash_map);
 }
 
-void free_lex_resources(){
+void free_lex_resources(void){
     char* str;
     kh_foreach_value(strings_hm, str, free(str));
     kh_destroy(strings_hash_map, strings_hm);

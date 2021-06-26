@@ -13,7 +13,7 @@
 #define SAVE_INT yylval.int_value = atoi(yytext);
 
 char* new_lex_string(char* yytext, unsigned yyleng);
-void init_lex();
-void free_lex_resources();
+void init_lex(void);
+void free_lex_resources(void);
 
 #endif

@@ -20,7 +20,7 @@ static void body(char *body, int depth);
 static void style(char *style);
 
 void yyerror(char const *s) {
-    printf("Error! %s, line:%d\n\n", s, yylineno);
+    fprintf(stderr,"Error in line %d: %s\n", yylineno, s);
     exit(0);
 }
 
@@ -38,7 +38,7 @@ void init_compiler(struct percy_args args) {
     }
 }
 
-void parse_input_file() {
+void parse_input_file(void) {
     char *ext = strrchr(percy_args.file_in, '.');
 
     if (ext == NULL || strcmp(ext, ".percy") != 0) {
@@ -84,7 +84,7 @@ void save_function(ast_node_t *function) {
     functions_hash_map_put(function_node->name, function_node);
 }
 
-void execute_main_function() {
+void execute_main_function(void) {
     ast_function_node_t *main_function = functions_hash_map_get("main");
 
     if (main_function == NULL) {

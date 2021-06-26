@@ -1,14 +1,28 @@
 main(){
-    element aux1 = new html;
-    element aux3 = new navbar("Mi empresa");
+    element html_em = new html();
+    element body_em = new body();
 
-    int a = 2;
-    int b = a + 3;
+    element nav_em = new navbar("Do-while loop example");
 
+    html_em.insert(body_em);
+    body_em.insert(nav_em);
+
+    int a = 0;
+    int b = a + 5;
+
+    element cont_em;
+    element text_em;
+    
     do{
-        aux1.insert(aux3);
+        cont_em = new container();
+        text_em = new text(a);
+        cont_em.insert(text_em);
+        body_em.insert(cont_em);
         a = a+1 ;
     } while(a < b);
 
-    render(aux1);
+    element footer_em = new footer("This is a do-while loop example");
+    body_em.insert(footer_em);
+
+    render(html_em);
 }

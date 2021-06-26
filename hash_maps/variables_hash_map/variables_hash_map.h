@@ -16,9 +16,9 @@ typedef struct var {
     } value;
 } var_t;
 
-void init_variables_hash_map();
+void init_variables_hash_map(void);
 
-void free_variables_hash_map();
+void free_variables_hash_map(void);
 
 var_t* variables_hash_map_put(char* var_name, int type);
 

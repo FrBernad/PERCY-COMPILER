@@ -32,7 +32,7 @@
 
 %token <token> '-' '+' '*' '/' '<' '>' EQ LE GE NEQ
 
-%token <token> MAIN RENDER ELEMENT_TYPE NEW INT_TYPE STRING_TYPE HTML NAVBAR FOOTER CONTAINER HEADER INSERT
+%token <token> MAIN RENDER ELEMENT_TYPE NEW INT_TYPE STRING_TYPE HTML NAVBAR FOOTER CONTAINER HEADER INSERT TEXT BODY
 
 
 %token <string_value> STRING_VALUE
@@ -249,7 +249,7 @@ main(){
                                     }
                                 ;
 
-    TAG:                        HTML
+    TAG:                        HTML '(' ')'
                                     {
                                         $$ = create_ast_html_tag_node(HTML,NULL,yylineno);
                                     }
@@ -261,13 +261,21 @@ main(){
                                     {
                                         $$ = create_ast_html_tag_node(FOOTER,$3,yylineno);
                                     }
-                                | CONTAINER '(' TAG_VALUE ')'
+                                | CONTAINER '(' ')'
                                     {
-                                        $$ = create_ast_html_tag_node(CONTAINER,$3,yylineno);
+                                        $$ = create_ast_html_tag_node(CONTAINER,NULL,yylineno);
                                     }
                                 | HEADER '(' TAG_VALUE ')'
                                     {
                                         $$ = create_ast_html_tag_node(HEADER,$3,yylineno);
+                                    }
+                                | TEXT '(' TAG_VALUE ')'
+                                    {
+                                        $$ = create_ast_html_tag_node(TEXT,$3,yylineno);
+                                    }
+                                | BODY '(' ')'
+                                    {
+                                        $$ = create_ast_html_tag_node(BODY,NULL,yylineno);
                                     }
                                 ;
     TAG_VALUE:                  STRING_VALUE
@@ -283,6 +291,7 @@ main(){
                                         $$ = create_ast_int_node($1,yylineno);
                                     }
                                     ;
+                                    
     TYPE:                        ELEMENT_TYPE 
                                     {
                                         $$ = $1;

@@ -20,7 +20,7 @@ usage(char *progname) {
             "Options:\n"
             "   -h                                 Prints the help and finishes.\n\n"
             "   -v                                 Prints the version and finishes.\n\n"
-            "   -i <input-file>                    Sets the file to process.\n\n"
+            "   -i <input-file>                    Sets the file to process, must have the '.percy' extension.\n\n"
             "   -o <output-file>                   Sets the output result file. The default is 'a.percyout'\n",
             progname);
 

@@ -46,7 +46,8 @@ ALPHA   [a-zA-Z_]
 "container"                     {return TOKEN(CONTAINER);}
 "header"                        {return TOKEN(HEADER);}
 "insert"                        {return TOKEN(INSERT);}
-
+"text"                          {return TOKEN(TEXT);}
+"body"                          {return TOKEN(BODY);}
 
  /*Relational operators*/
 

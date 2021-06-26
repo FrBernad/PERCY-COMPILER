@@ -62,26 +62,53 @@ element_t* create_element(ast_tag_node_t* tag_node) {
 
         case NAVBAR:
             element->name = "div";
-            element->body = ast_string_value_get(tag_node->body);
-            element->style = "height:60px;width:100%;background-color:#333;font-size:20px;font-weight:bold;text-align:left;padding: 0 10px;display:flex;justify-items:start;align-content:center;";
+            element->body = NULL;
+            element->style = "box-sizing: border-box;height:60px;width:100%;background-color:#333;font-size:20px;font-weight:bold;text-align:left;padding: 0 10px;display:flex;justify-content:start;align-content:center;color:#e8e8e8;";
+            init_elements_list(&element->child_elements);
+
+            ast_tag_node_t nav_text_tag = {
+                .body = tag_node->body,
+                .type = TEXT
+            };
+            element_t* nav_text = create_element(&nav_text_tag);
+            insert_element(element, nav_text);
             break;
 
         case FOOTER:
             element->name = "footer";
-            element->body = ast_string_value_get(tag_node->body);
-            element->style = "position:absolute;bottom:0;height:100px;width:100%;background-color:#333;font-size:20px;font-weight:bold;text-align:center;padding: 0 10px;display:flex;justify-items:start;align-content:center;";
+            element->body = NULL;
+            element->style = "box-sizing: border-box;position:absolute;bottom:0;height:100px;width:100%;background-color:#333;font-size:20px;font-weight:bold;text-align:center;padding: 0 10px;display:flex;justify-content:center;align-content:center;color:#e8e8e8;";
+            init_elements_list(&element->child_elements);
+
+            ast_tag_node_t footer_text_tag = {
+                .body = tag_node->body,
+                .type = TEXT};
+            element_t* footer_text = create_element(&footer_text_tag);
+            insert_element(element, footer_text);
             break;
 
         case CONTAINER:
             element->name = "div";
-            element->body = ast_string_value_get(tag_node->body);
-            element->style = "";
+            element->body = NULL;
+            element->style = "box-sizing: border-box;width:100%;font-size:20px;font-weight:bold;text-align:center;padding:20px;display:flex;justify-content:center;align-content:center";
             break;
 
         case HEADER:
-            element->name = "header";
+            element->name = "h1";
             element->body = ast_string_value_get(tag_node->body);
-            element->style = "";
+            element->style = "text-align: center;";
+            break;
+
+        case TEXT:
+            element->name = "p";
+            element->body = ast_string_value_get(tag_node->body);
+            element->style = "text-align: center;";
+            break;
+
+        case BODY:
+            element->name = "body";
+            element->body = NULL;
+            element->style = "margin:0;";
             break;
 
         default:
@@ -95,13 +122,12 @@ element_t* create_element(ast_tag_node_t* tag_node) {
 
     return element;
 }
-
+// H N T
+// H: N
+// N: T
 static void free_element_list_nodes(element_list_t* list) {
     element_node_t* iter = list->first;
     while (iter != NULL) {
-        if (iter->element->child_elements != NULL) {
-            free_element_list_nodes(iter->element->child_elements);
-        }
         element_node_t* aux;
         aux = iter;
         iter = iter->next;
@@ -109,7 +135,7 @@ static void free_element_list_nodes(element_list_t* list) {
     }
 }
 
-void free_elements() {
+void free_elements(void) {
     element_node_t* iter = elements_list.first;
     while (iter != NULL) {
         if (iter->element->child_elements != NULL) {

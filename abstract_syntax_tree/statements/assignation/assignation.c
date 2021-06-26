@@ -58,6 +58,7 @@ ast_node_t* create_ast_assignation_node(char* var_name, ast_node_t* value, int l
     }
 
     assignation_node->type = ASSIGNATION_TK;
+    assignation_node->line_no = line_no;
     assignation_node->process = ast_assignation_process;
     assignation_node->destroy = ast_assignation_destroy;
 

@@ -31,6 +31,7 @@ ast_node_t* create_ast_declaration_node(int type, char* var_name, int line_no) {
     }
 
     declaration_node->type = DECLARATION_TK;
+    declaration_node->line_no = line_no;
     declaration_node->process = ast_declaration_process;
     declaration_node->destroy = ast_declaration_destroy;
 

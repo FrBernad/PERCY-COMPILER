@@ -7,11 +7,11 @@ static khash_t(variables_hash_map) * variables_hm;
 
 static var_t * create_new_var(char* var_name, int type);
 
-void init_variables_hash_map() {
+void init_variables_hash_map(void) {
     variables_hm = kh_init(variables_hash_map);
 }
 
-void free_variables_hash_map() {
+void free_variables_hash_map(void) {
     var_t* var;
     kh_foreach_value(variables_hm, var, free(var));
     kh_destroy(variables_hash_map, variables_hm);

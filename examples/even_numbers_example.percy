@@ -1,19 +1,32 @@
 main(){
-    element aux1 = new html;
+    element html_em = new html();
+    element body_em = new body();
+
+    element nav_em = new navbar("First 6 even numbers");
+
+    html_em.insert(body_em);
+    body_em.insert(nav_em);
 
     int a = 0;
     int b = 0;    
 
-    element aux2;
+    element cont_em;
+    element text_em;
 
     while(a<6){
         if(b%2==0){
-            aux2 = new container(b);
-            aux1.insert(aux2);
+            cont_em = new container();
+            text_em = new text(b);
+            cont_em.insert(text_em);
+
+            body_em.insert(cont_em);
+            a = a+1;
         }
-        a = a+1;
         b = b+1;
     }
 
-    render(aux1);
+    element footer_em = new footer("This is my even numbers example");
+    body_em.insert(footer_em);
+
+    render(html_em);
 }

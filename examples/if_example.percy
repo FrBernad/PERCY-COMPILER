@@ -1,16 +1,37 @@
-
 main(){
-    element aux1 = new html;
-    element aux3 = new navbar("Mi empresa");
+    element html_em = new html();
+    element body_em = new body();
 
-    if(3<1){
-    }else{
-    element aux2;
+    element nav_em = new navbar("Conditionals examples");
+
+    html_em.insert(body_em);
+    body_em.insert(nav_em);
+
+    int a = 0;
+    int b = a;    
+
+    element cont_em;
+    element text_em;
+
+    if(b==a){
+        cont_em = new container();
+        text_em = new text("conditional was true");
+        cont_em.insert(text_em);
+        body_em.insert(cont_em);
+        a = a+1;
     }
-    
-    aux2 = new footer("sisi");
-    aux1.insert(aux3);
-    aux1.insert(aux2);
 
-    render(aux1);
+    if(b==a){
+
+    }else{
+        cont_em = new container();
+        text_em = new text("conditional was false");
+        cont_em.insert(text_em);
+        body_em.insert(cont_em);
+    }
+
+    element footer_em = new footer("My first conditional examples");
+    body_em.insert(footer_em);
+
+    render(html_em);
 }
