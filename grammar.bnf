@@ -60,10 +60,10 @@
                         | STRING_VALUE
                         | EXP
 
-   <TAG>                :== HTML
+   <TAG>                :== HTML '(' ')'
                         | NAVBAR '(' <TAG_VALUE> ')'
                         | FOOTER '(' <TAG_VALUE> ')'
-                        | CONTAINER '(' <TAG_VALUE> ')'
+                        | CONTAINER '(' ')'
                         | HEADER '(' <TAG_VALUE> ')'
                         | TEXT '(' <TAG_VALUE> ')'
                         | BODY '(' ')'
