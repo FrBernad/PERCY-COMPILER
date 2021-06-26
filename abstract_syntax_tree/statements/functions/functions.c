@@ -2,6 +2,8 @@
 
 #include <stdlib.h>
 
+#include "error_handler/error_handler.h"
+
 static ast_node_t* ast_function_process(ast_node_t* node) {
     return NULL;
 }
@@ -13,10 +15,14 @@ static void ast_function_destroy(ast_node_t* node) {
     free(function_node);
 }
 
-ast_node_t* create_ast_function_node(char* function_name, ast_node_t* statements, char* render_var) {
+ast_node_t* create_ast_function_node(char* function_name, ast_node_t* statements, char* render_var, int line_no) {
     ast_function_node_t* function_node = malloc(sizeof(*function_node));
+    if (function_node == NULL) {
+        handle_os_error("malloc failed");
+    }
 
     function_node->type = FUNCTION_TK;
+    function_node->line_no = line_no;
     function_node->process = ast_function_process;
     function_node->destroy = ast_function_destroy;
     

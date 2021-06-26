@@ -4,11 +4,14 @@
 #include <stdlib.h>
 
 #include "abstract_syntax_tree/statements/values/values.h"
+#include "error_handler/error_handler.h"
 #include "hash_maps/variables_hash_map/variables_hash_map.h"
 #include "y.tab.h"
 
 typedef struct ast_definition_node {
     int type;
+    int line_no;
+
     ast_node_t* (*process)(ast_node_t* node);
     void (*destroy)(ast_node_t* node);
 
@@ -25,9 +28,8 @@ static ast_node_t* ast_definition_process(ast_node_t* node) {
     var_t* var = variables_hash_map_put(definition->var_name, definition->value_type);
 
     if (var == NULL) {
-        printf("Redefinition of variable");
+        handle_error("redefinition of variable", node->line_no);
     }
-    printf("Var definition: name: %s\ttype: %d\n", definition->var_name, definition->value_type);
 
     switch (definition->value_type) {
         case INT_TYPE:
@@ -40,7 +42,7 @@ static ast_node_t* ast_definition_process(ast_node_t* node) {
             var->value.tag = ast_tag_value_get(definition->value);
             break;
         default:
-            printf("Invalid type");
+            handle_error("invalid variable type", node->line_no);
             break;
     }
 
@@ -53,11 +55,14 @@ static void ast_definition_destroy(ast_node_t* node) {
     free(definition);
 }
 
-ast_node_t* create_ast_definition_node(int type, char* name, ast_node_t* value) {
-
+ast_node_t* create_ast_definition_node(int type, char* name, ast_node_t* value, int line_no) {
     ast_definition_node_t* definition_node = malloc(sizeof(*definition_node));
+    if (definition_node == NULL) {
+        handle_os_error("malloc failed");
+    }
 
     definition_node->type = DEFINITION_TK;
+    definition_node->line_no = line_no;
     definition_node->process = ast_definition_process;
     definition_node->destroy = ast_definition_destroy;
 

@@ -17,6 +17,8 @@
 #include "compiler_utils/args/args.h"
 #include "y.tab.h"
 
+extern int yylineno;
+
 int yylex();
 
 void yyerror(char const *s);
@@ -29,6 +31,6 @@ void parse_input_file();
 
 void execute_main_function();
 
-void free_resources();
+void free_resources(int error);
 
 #endif

@@ -6,6 +6,8 @@
 
 typedef struct ast_function_node {
     int type;
+    int line_no;
+
     ast_node_t* (*process)(ast_node_t* node);
     void (*destroy)(ast_node_t* node);
 
@@ -14,6 +16,6 @@ typedef struct ast_function_node {
     char* render_var;
 } ast_function_node_t;
 
-ast_node_t* create_ast_function_node(char* function_name, ast_node_t* statements, char* render_var);
+ast_node_t* create_ast_function_node(char* function_name, ast_node_t* statements, char* render_var, int line_no);
 
 #endif

@@ -4,8 +4,9 @@
 #include <stdlib.h>
 
 #include "abstract_syntax_tree/statements/values/values.h"
+#include "error_handler/error_handler.h"
 
-static int process_expression_value(int left, int right, int type);
+static int process_expression_value(int left, int right, int type, int line_no);
 
 // ---
 
@@ -22,7 +23,7 @@ static ast_node_t* ast_exp_process(ast_node_t* node) {
         free_node(int_node);
     }
 
-    return create_ast_int_node(process_expression_value(left, right, node->type));
+    return create_ast_int_node(process_expression_value(left, right, node->type, node->line_no), node->line_no);
 }
 
 static void ast_exp_destroy(ast_node_t* node) {
@@ -35,10 +36,14 @@ static void ast_exp_destroy(ast_node_t* node) {
 
 // ---
 
-ast_node_t* create_ast_expression_node(int type, ast_node_t* left, ast_node_t* right) {
+ast_node_t* create_ast_expression_node(int type, ast_node_t* left, ast_node_t* right, int line_no) {
     ast_expression_node_t* exp_node = malloc(sizeof(*exp_node));
+    if (exp_node == NULL) {
+        handle_os_error("malloc failed");
+    }
 
     exp_node->type = type;
+    exp_node->line_no = line_no;
     exp_node->process = ast_exp_process;
     exp_node->destroy = ast_exp_destroy;
 
@@ -48,9 +53,7 @@ ast_node_t* create_ast_expression_node(int type, ast_node_t* left, ast_node_t* r
     return (ast_node_t*)exp_node;
 }
 
-
-static int process_expression_value(int left, int right, int type) {
-    printf("type %d\n",type);
+static int process_expression_value(int left, int right, int type, int line_no) {
     int ret_val = 0;
     switch (type) {
         case '+':
@@ -93,7 +96,7 @@ static int process_expression_value(int left, int right, int type) {
             ret_val = left && right;
             break;
         default:
-            printf("Expression not recognized\n");
+            handle_error("expression not recognized",line_no);
             break;
     }
 

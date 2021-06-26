@@ -4,9 +4,12 @@
 #include <stdlib.h>
 
 #include "abstract_syntax_tree/statements/values/values.h"
+#include "error_handler/error_handler.h"
 
 typedef struct ast_do_while_node {
     int type;
+    int line_no;
+
     ast_node_t* (*process)(ast_node_t* node);
     void (*destroy)(ast_node_t* node);
 
@@ -40,10 +43,14 @@ static void ast_do_while_destroy(ast_node_t* node) {
     free(do_while_node);
 }
 
-ast_node_t* create_ast_do_while_node(ast_node_t* condition, ast_node_t* statements) {
+ast_node_t* create_ast_do_while_node(ast_node_t* condition, ast_node_t* statements, int line_no) {
     ast_do_while_node_t* do_while_node = malloc(sizeof(*do_while_node));
+    if (do_while_node == NULL) {
+        handle_os_error("malloc failed");
+    }
 
     do_while_node->type = DO;
+    do_while_node->line_no = line_no;
     do_while_node->process = ast_do_while_process;
     do_while_node->destroy = ast_do_while_destroy;
 

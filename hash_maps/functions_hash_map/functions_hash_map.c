@@ -22,7 +22,6 @@ bool functions_hash_map_put(char* function_name, ast_function_node_t* function) 
         khiter_t k = kh_put(functions_hash_map, functions_hm, function_name, &ret);
 
         if (ret == -1) {
-            printf("Error put %s\n", function_name);
             return false;
         }
         kh_val(functions_hm, k) = function;

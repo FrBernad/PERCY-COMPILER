@@ -22,6 +22,5 @@ void free_node(ast_node_t* node) {
     if (node == NULL) {
         return;
     }
-
     node->destroy(node);
 }

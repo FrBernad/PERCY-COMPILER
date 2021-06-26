@@ -6,6 +6,8 @@
 
 typedef struct ast_declaration_node {
     int type;
+    int line_no;
+
     ast_node_t* (*process)(ast_node_t* node);
     void (*destroy)(ast_node_t* node);
 
@@ -13,6 +15,6 @@ typedef struct ast_declaration_node {
     char* var_name;
 } ast_declaration_node_t;
 
-ast_node_t* create_ast_declaration_node(int type, char* symbol);
+ast_node_t* create_ast_declaration_node(int type, char* var_name, int line_no);
 
 #endif

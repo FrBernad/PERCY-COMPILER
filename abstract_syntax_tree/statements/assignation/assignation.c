@@ -3,11 +3,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "error_handler/error_handler.h"
 #include "abstract_syntax_tree/statements/values/values.h"
 #include "hash_maps/variables_hash_map/variables_hash_map.h"
 
 typedef struct ast_assignation_node {
     int type;
+    int line_no;
 
     ast_node_t* (*process)(ast_node_t* node);
     void (*destroy)(ast_node_t* node);
@@ -23,8 +25,7 @@ static ast_node_t* ast_assignation_process(ast_node_t* node) {
     var_t* var = variables_hash_map_get(assignation->var_name);
 
     if (var == NULL) {
-        printf("Var not declared in assignation\n");
-        return NULL;
+        handle_error("variable not declared prior to assignation",node->line_no);
     }
 
     switch (var->type) {
@@ -41,8 +42,6 @@ static ast_node_t* ast_assignation_process(ast_node_t* node) {
             break;
     }
 
-    printf("Var assignation: name: %s\ttype: %d\n", assignation->var_name, assignation->value->type);
-
     return NULL;
 }
 
@@ -52,8 +51,11 @@ static void ast_assignation_destroy(ast_node_t* node){
     free(assignation_node);
 }
 
-ast_node_t* create_ast_assignation_node(char* var_name, ast_node_t* value) {
+ast_node_t* create_ast_assignation_node(char* var_name, ast_node_t* value, int line_no) {
     ast_assignation_node_t* assignation_node = malloc(sizeof(*assignation_node));
+    if(assignation_node==NULL){
+        handle_os_error("malloc failed");
+    }
 
     assignation_node->type = ASSIGNATION_TK;
     assignation_node->process = ast_assignation_process;

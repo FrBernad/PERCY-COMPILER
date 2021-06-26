@@ -6,6 +6,8 @@
 
 typedef struct ast_expression_node {
     int type;
+    int line_no;
+
     ast_node_t* (*process)(ast_node_t* node);
     void (*destroy)(ast_node_t* node);
 
@@ -13,6 +15,6 @@ typedef struct ast_expression_node {
     ast_node_t* right;
 } ast_expression_node_t;
 
-ast_node_t* create_ast_expression_node(int type, ast_node_t* left, ast_node_t* right);
+ast_node_t* create_ast_expression_node(int type, ast_node_t* left, ast_node_t* right, int line_no);
 
 #endif

@@ -77,8 +77,7 @@ main(){
 %%
     PROGRAM:                    MAIN '(' ')' '{' STATEMENTS RENDER_CALL '}' 
                                     {
-                                        ast_node_t * main_function = create_ast_function_node("main",$5,$6);
-                                        printf("created main!\n");
+                                        ast_node_t * main_function = create_ast_function_node("main",$5,$6,yylineno);
                                         save_function(main_function);
                                     }
                                 ;
@@ -91,7 +90,7 @@ main(){
 
     STATEMENTS:                 STATEMENTS STATEMENT    
                                     {
-                                        $$ = create_ast_statements_node($1,$2); 
+                                        $$ = create_ast_statements_node($1,$2,yylineno); 
                                     }
                                 |                       
                                     { 
@@ -112,42 +111,42 @@ main(){
                                 
     DEFINITION:                 TYPE ID '=' VALUE
                                     {
-                                        $$ = create_ast_definition_node($1,$2,$4);
+                                        $$ = create_ast_definition_node($1,$2,$4,yylineno);
                                     }
                                 ;
 
     DECLARATION:                TYPE ID
                                     {
-                                        $$ = create_ast_declaration_node($1,$2);
+                                        $$ = create_ast_declaration_node($1,$2,yylineno);
                                     }
                                 ;
 
 
     ASSIGNATION:                ID '=' VALUE
                                     {
-                                        $$ = create_ast_assignation_node($1,$3);       
+                                        $$ = create_ast_assignation_node($1,$3,yylineno);       
                                     }
                                 ;
 
     INSERT_MT:                  ID '.' INSERT '(' ID ')' ';'
                                     {
-                                        $$ = create_ast_insert_node($1,$5);       
+                                        $$ = create_ast_insert_node($1,$5,yylineno);       
                                     }
                                 ;
 
     IF_STATEMENT:               IF '(' EXP ')' '{' STATEMENTS '}' ELSE '{' STATEMENTS '}'
                                     {
-                                        $$ = create_ast_if_node($3,$6,$10);
+                                        $$ = create_ast_if_node($3,$6,$10,yylineno);
                                     }
                                 | IF '(' EXP ')' '{' STATEMENTS '}'
                                     {
-                                        $$ = create_ast_if_node($3,$6,NULL);
+                                        $$ = create_ast_if_node($3,$6,NULL,yylineno);
                                     }
                                 ;
 
     FOR_STATEMENT:              FOR '(' FOR_ASSIGNMENT ';' EXP ';' FOR_ASSIGNMENT ')' '{' STATEMENTS '}'
                                     {
-                                        $$ = create_ast_for_node($3,$5,$10,$7);
+                                        $$ = create_ast_for_node($3,$5,$10,$7,yylineno);
                                     }
                                 ;  
     
@@ -160,67 +159,67 @@ main(){
 
     DO_WHILE:                   DO '{' STATEMENTS '}' WHILE '(' EXP ')' ';'
                                     {
-                                            $$ = create_ast_do_while_node($7,$3);
+                                            $$ = create_ast_do_while_node($7,$3,yylineno);
                                     }
                                 ;
 
     WHILE_STATEMENT:            WHILE '(' EXP ')' '{' STATEMENTS '}'
                                     {
-                                            $$ = create_ast_while_node($3,$6);
+                                            $$ = create_ast_while_node($3,$6,yylineno);
                                     }
                                 ;
     
     EXP:                        EXP '+' EXP 
                                     {
-                                        $$ = create_ast_expression_node('+',$1,$3);
+                                        $$ = create_ast_expression_node('+',$1,$3,yylineno);
                                     }
                                 | EXP '-' EXP
                                     {
-                                        $$ = create_ast_expression_node('-',$1,$3);
+                                        $$ = create_ast_expression_node('-',$1,$3,yylineno);
                                     }
                                 | EXP '*' EXP
                                     {
-                                        $$ = create_ast_expression_node('*',$1,$3);
+                                        $$ = create_ast_expression_node('*',$1,$3,yylineno);
                                     }
                                 | EXP '/' EXP
                                     {
-                                        $$ = create_ast_expression_node('/',$1,$3);
+                                        $$ = create_ast_expression_node('/',$1,$3,yylineno);
                                     }
                                 | EXP '<' EXP
                                     {
-                                        $$ = create_ast_expression_node('<',$1,$3);
+                                        $$ = create_ast_expression_node('<',$1,$3,yylineno);
                                     }
                                 | EXP '>' EXP
                                     {
-                                        $$ = create_ast_expression_node('>',$1,$3);
+                                        $$ = create_ast_expression_node('>',$1,$3,yylineno);
                                     }
                                 | EXP '%' EXP
                                     {
-                                        $$ = create_ast_expression_node('%',$1,$3);
+                                        $$ = create_ast_expression_node('%',$1,$3,yylineno);
                                     }
                                 | EXP LE EXP
                                     {
-                                        $$ = create_ast_expression_node($2,$1,$3);
+                                        $$ = create_ast_expression_node($2,$1,$3,yylineno);
                                     }
                                 | EXP GE EXP
                                     {
-                                        $$ = create_ast_expression_node($2,$1,$3);
+                                        $$ = create_ast_expression_node($2,$1,$3,yylineno);
                                     }
                                 | EXP EQ EXP
                                     {
-                                        $$ = create_ast_expression_node($2,$1,$3);
+                                        $$ = create_ast_expression_node($2,$1,$3,yylineno);
                                     }
                                 | EXP NEQ EXP
                                     {
-                                        $$ = create_ast_expression_node($2,$1,$3);
+                                        $$ = create_ast_expression_node($2,$1,$3,yylineno);
                                     }
                                 | EXP OR EXP
                                     {
-                                        $$ = create_ast_expression_node($2,$1,$3);
+                                        $$ = create_ast_expression_node($2,$1,$3,yylineno);
                                     }
                                 | EXP AND EXP
                                     {
-                                        $$ = create_ast_expression_node($2,$1,$3);
+                                        $$ = create_ast_expression_node($2,$1,$3,yylineno);
                                     }
                                 | '(' EXP ')'
                                     {
@@ -228,60 +227,60 @@ main(){
                                     }
                                 | ID  
                                     {
-                                        $$ = create_ast_reference_node($1);
+                                        $$ = create_ast_reference_node($1,yylineno);
                                     }
                                 | INT_VALUE
                                     {
-                                        $$ = create_ast_int_node($1);
+                                        $$ = create_ast_int_node($1,yylineno);
                                     }
                                 ; 
 
     VALUE:                      NEW TAG 
                                     {
-                                        $$ = create_ast_tag_node($2);
+                                        $$ = create_ast_tag_node($2,yylineno);
                                     }
                                 | STRING_VALUE
                                     {
-                                        $$ = create_ast_string_node($1);
+                                        $$ = create_ast_string_node($1,yylineno);
                                     }
                                 | EXP 
                                     {
-                                        $$ = create_ast_exp_node($1);
+                                        $$ = create_ast_exp_node($1,yylineno);
                                     }
                                 ;
 
     TAG:                        HTML
                                     {
-                                        $$ = create_ast_html_tag_node();
+                                        $$ = create_ast_html_tag_node(HTML,NULL,yylineno);
                                     }
                                 | NAVBAR '(' TAG_VALUE ')'
                                     {
-                                        $$ = create_ast_navbar_tag_node($3);
+                                        $$ = create_ast_html_tag_node(NAVBAR,$3,yylineno);
                                     }
                                 | FOOTER '(' TAG_VALUE ')'
                                     {
-                                        $$ = create_ast_footer_tag_node($3);
+                                        $$ = create_ast_html_tag_node(FOOTER,$3,yylineno);
                                     }
                                 | CONTAINER '(' TAG_VALUE ')'
                                     {
-                                        $$ = create_ast_container_tag_node($3);
+                                        $$ = create_ast_html_tag_node(CONTAINER,$3,yylineno);
                                     }
                                 | HEADER '(' TAG_VALUE ')'
                                     {
-                                        $$ = create_ast_header_tag_node($3);
+                                        $$ = create_ast_html_tag_node(HEADER,$3,yylineno);
                                     }
                                 ;
     TAG_VALUE:                  STRING_VALUE
                                     {
-                                        $$ = create_ast_string_node($1);
+                                        $$ = create_ast_string_node($1,yylineno);
                                     }
                                 | ID  
                                     {
-                                        $$ = create_ast_reference_node($1);
+                                        $$ = create_ast_reference_node($1,yylineno);
                                     }
                                 | INT_VALUE
                                     {
-                                        $$ = create_ast_int_node($1);
+                                        $$ = create_ast_int_node($1,yylineno);
                                     }
                                     ;
     TYPE:                        ELEMENT_TYPE 
@@ -313,7 +312,7 @@ void parse_args(int argc, char** argv, struct percy_args* args);
 
     execute_main_function();
 
-    free_resources();
+    free_resources(0);
 
     return 0;
 }

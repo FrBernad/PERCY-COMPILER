@@ -5,6 +5,7 @@ struct ast_node;
 
 typedef struct ast_node {
     int type;
+    int line_no;
     struct ast_node* (*process)(struct ast_node* node);
     void (*destroy)(struct ast_node* node);
 

@@ -4,9 +4,12 @@
 #include <stdlib.h>
 
 #include "abstract_syntax_tree/statements/values/values.h"
+#include "error_handler/error_handler.h"
 
 typedef struct ast_for_node {
     int type;
+    int line_no;
+
     ast_node_t* (*process)(ast_node_t* node);
     void (*destroy)(ast_node_t* node);
 
@@ -62,10 +65,14 @@ static void ast_for_destroy(ast_node_t* node) {
     free(for_node);
 }
 
-ast_node_t* create_ast_for_node(ast_node_t* first_assignment, ast_node_t* condition, ast_node_t* statements, ast_node_t* for_assignment) {
+ast_node_t* create_ast_for_node(ast_node_t* first_assignment, ast_node_t* condition, ast_node_t* statements, ast_node_t* for_assignment, int line_no) {
     ast_for_node_t* for_node = malloc(sizeof(*for_node));
+    if (for_node == NULL) {
+        handle_os_error("malloc failed");
+    }
 
     for_node->type = FOR;
+    for_node->line_no = line_no;
     for_node->process = ast_for_process;
     for_node->destroy = ast_for_destroy;
 

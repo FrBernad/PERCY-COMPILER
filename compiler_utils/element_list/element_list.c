@@ -5,6 +5,7 @@
 
 #include "abstract_syntax_tree/ast/ast.h"
 #include "abstract_syntax_tree/statements/values/values.h"
+#include "error_handler/error_handler.h"
 #include "y.tab.h"
 
 static element_list_t elements_list;
@@ -34,12 +35,19 @@ void insert_element(element_t* parent_element, element_t* child_element) {
 
 void init_elements_list(element_list_t** element_list) {
     *element_list = malloc(sizeof(element_list_t));
+    if (*element_list == NULL) {
+        handle_os_error("malloc failed");
+    }
+
     (*element_list)->last = NULL;
     (*element_list)->first = (*element_list)->last;
 }
 
 element_t* create_element(ast_tag_node_t* tag_node) {
     element_t* element = calloc(1, sizeof(*element));
+    if(element==NULL){
+        handle_os_error("calloc failed");
+    }
 
     if (element == NULL) {
         return NULL;
@@ -79,7 +87,7 @@ element_t* create_element(ast_tag_node_t* tag_node) {
         default:
             free(element);
             element = NULL;
-            printf("TAG INVALIDO\n");
+            handle_error("invalid tag", tag_node->line_no);
             break;
     }
 
@@ -118,6 +126,9 @@ void free_elements() {
 
 static void add_to_elements_list(element_t* element) {
     element_node_t* new_node = new_element_node(element);
+    if (new_node == NULL) {
+        handle_os_error("malloc failed");
+    }
 
     if (elements_list.first == NULL && elements_list.last == NULL) {
         elements_list.first = new_node;

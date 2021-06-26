@@ -4,11 +4,11 @@
 
 #include "compiler_utils/element_list/element_list.h"
 #include "compiler_utils/lex_utils/lex_utils.h"
+#include "error_handler/error_handler.h"
 #include "hash_maps/functions_hash_map/functions_hash_map.h"
 #include "hash_maps/variables_hash_map/variables_hash_map.h"
 #include "libs/khash/khash.h"
 
-extern int yylineno;
 extern FILE *yyin;
 static FILE *output;
 
@@ -32,17 +32,23 @@ void init_compiler(struct percy_args args) {
 
     output = fopen(percy_args.file_out, "w");
     if (output == NULL) {
-        perror("Error at opening file\n");
-        fprintf(stderr, "Excecution cannot continue\n");
-        exit(0);
+        perror("can not open output file\n");
+        fprintf(stderr, "Fatal error\n");
+        exit(1);
     }
 }
 
 void parse_input_file() {
+    char *ext = strrchr(percy_args.file_in, '.');
+
+    if (ext == NULL || strcmp(ext, ".percy") != 0) {
+        handle_os_error("invalid source file, extension must be of type '.percy'");
+    }
+
     FILE *input_file = fopen(percy_args.file_in, "r");
     if (input_file == NULL) {
-        printf("error!!\n");
-        exit(0);
+        yyin = input_file;
+        handle_os_error("could not open source file");
     }
     
     // set lex to read from it instead of defaulting to STDIN:
@@ -50,19 +56,26 @@ void parse_input_file() {
     yyparse();
 }
 
-void free_resources(){
+void free_resources(int error){
     ast_function_node_t *main_function = functions_hash_map_get("main");
 
-    if (main_function == NULL) {
-        printf("NO HAY MAIN!!!!\n\n");
+    if (main_function != NULL) {
+        free_ast((ast_node_t *)main_function);
     }
-
-    free_ast((ast_node_t *)main_function);
 
     free_elements();
     free_lex_resources();
     free_functions_hash_map();
     free_variables_hash_map();
+    if(yyin!=NULL){
+        fclose(yyin);
+    }
+    fclose(output);
+
+    if(error){
+        remove(percy_args.file_out);
+    }
+
 }
 
 void save_function(ast_node_t *function) {
@@ -75,20 +88,22 @@ void execute_main_function() {
     ast_function_node_t *main_function = functions_hash_map_get("main");
 
     if (main_function == NULL) {
-        printf("NO HAY MAIN!!!!\n\n");
+        handle_os_error("main function not found, aborting");
     }
 
     execute_ast(main_function->statements);
 
     var_t *to_render = variables_hash_map_get(main_function->render_var);
 
-    if (to_render == NULL || to_render->type != ELEMENT_TYPE) {
-        printf("invalid render element\n");
-        return;
+    if (to_render == NULL) {
+        handle_os_error("render variable not defined");
+    }
+
+    if (to_render->type != ELEMENT_TYPE) {
+        handle_os_error("render variable type is invalid, must be of type element");
     }
 
     render_element(to_render->value.tag, 0);
-    printf("going to render var: %s\n", main_function->render_var);
 }
 
 static void render_element(element_t *element, int depth) {

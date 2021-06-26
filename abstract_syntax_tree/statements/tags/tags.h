@@ -6,16 +6,14 @@
 
 typedef struct ast_tag_node {
     int type;
+    int line_no;
+
     ast_node_t* (*process)(ast_node_t* node);
     void (*destroy)(ast_node_t* node);
 
     ast_node_t * body;
 } ast_tag_node_t;
 
-ast_node_t* create_ast_html_tag_node();
-ast_node_t* create_ast_navbar_tag_node(ast_node_t* node);
-ast_node_t* create_ast_footer_tag_node(ast_node_t* node);
-ast_node_t* create_ast_container_tag_node(ast_node_t* node);
-ast_node_t* create_ast_header_tag_node(ast_node_t* node);
+ast_node_t* create_ast_html_tag_node(int type, ast_node_t* body, int line_no);
 
 #endif
