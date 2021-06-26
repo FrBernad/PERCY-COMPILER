@@ -28,7 +28,7 @@
    <IF_STATEMENT>       :== IF '(' <EXP> ')' '{' <STATEMENTS> '}' ELSE '{' <STATEMENTS> '}'
                         | IF '(' <EXP> ')' '{' <STATEMENTS> '}'
 
-   FOR_STATEMENT        :== FOR '(' <FOR_ASSIGNMENT> ';' <EXP> ';' <FOR_ASSIGNMENT> ')' '{' <STATEMENTS> '}'
+   <FOR_STATEMENT>      :== FOR '(' <FOR_ASSIGNMENT> ';' <EXP> ';' <FOR_ASSIGNMENT> ')' '{' <STATEMENTS> '}'
 
    <FOR_ASSIGNMENT>     :== <ASSIGNATION>
                         | <DECLARATION>
