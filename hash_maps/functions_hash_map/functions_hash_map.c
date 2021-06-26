@@ -2,8 +2,6 @@
 
 #include "libs/khash/khash.h"
 
-#include <stdio.h>
-
 KHASH_MAP_INIT_STR(functions_hash_map, ast_function_node_t*)
 
 static khash_t(functions_hash_map) * functions_hm;

@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "abstract_syntax_tree/ast/ast.h"
 #include "abstract_syntax_tree/statements/values/values.h"
 #include "error_handler/error_handler.h"
 #include "y.tab.h"

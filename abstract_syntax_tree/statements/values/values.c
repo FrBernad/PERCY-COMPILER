@@ -3,8 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "abstract_syntax_tree/statements/expressions/expressions.h"
-#include "abstract_syntax_tree/statements/tags/tags.h"
 #include "compiler_utils/lex_utils/lex_utils.h"
 #include "error_handler/error_handler.h"
 #include "hash_maps/variables_hash_map/variables_hash_map.h"

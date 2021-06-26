@@ -1,6 +1,5 @@
 #include "args.h"
 
-#include <errno.h>
 #include <getopt.h>
 #include <stdio.h>  /* for printf */
 #include <stdlib.h> /* for exit */

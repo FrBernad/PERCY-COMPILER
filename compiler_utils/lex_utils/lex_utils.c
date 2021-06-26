@@ -1,6 +1,5 @@
 #include "lex_utils.h"
 
-#include <stdio.h>
 #include <string.h>
 
 #include "error_handler/error_handler.h"

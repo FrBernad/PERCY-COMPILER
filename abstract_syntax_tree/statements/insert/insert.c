@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "abstract_syntax_tree/ast_functions/ast_functions.h"
 #include "compiler_utils/element_list/element_list.h"
 #include "error_handler/error_handler.h"
 #include "hash_maps/variables_hash_map/variables_hash_map.h"

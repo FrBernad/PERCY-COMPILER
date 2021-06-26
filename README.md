@@ -5,11 +5,11 @@
 - [Agustín Manfredi](https://github.com/imanfredi)
 - [Joaquín Legammare](https://github.com/JoacoLega)
 
-The report can be found in the root directory under the name [informe.pdf](https://github.com/FrBernad/PERCY-PROJECT/blob/main/informe.pdf)
+The report can be found in the root directory under the name [informe.pdf](https://github.com/FrBernad/PERCY-COMPILER/blob/main/informe.pdf)
 
 # Percy
 
-**PercyCompiler** is a simple compiler implemented with Lex and Yacc for the **PercyLenguage** language. The **PercyLenguage** is a ***strongly-typed*** language that uses a syntax similar to javascript. This language allows you to generate simple ***static html*** files.
+**PercyCompiler** is a simple compiler implemented with Lex and Yacc for the **PercyLanguage** language. The **PercyLanguage** is a ***strongly-typed*** language that uses a syntax similar to javascript. This language allows you to generate simple ***static html*** files.
 
 ## Compilation
 
@@ -28,7 +28,7 @@ To ***remove*** all the generated files, run the `make clean` command.
 
 ## Examples
 
-In the `/examples` directory you can find some examples of the PercyLenguaje syntax and functionality:
+In the `/examples` directory you can find some examples of the PercyLanguage syntax and functionality:
 
 - `do_while_example.percy`: shows the syntax and functionality of the "do while" cycle.
 

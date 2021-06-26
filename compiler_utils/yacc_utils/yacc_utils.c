@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 
-#include "compiler_utils/element_list/element_list.h"
 #include "compiler_utils/lex_utils/lex_utils.h"
 #include "error_handler/error_handler.h"
 #include "hash_maps/functions_hash_map/functions_hash_map.h"

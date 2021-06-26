@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "abstract_syntax_tree/ast_functions/ast_functions.h"
 #include "error_handler/error_handler.h"
 
 static ast_node_t* ast_statements_process(ast_node_t* node) {
