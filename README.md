@@ -5,6 +5,8 @@
 - [Agustín Manfredi](https://github.com/imanfredi)
 - [Joaquín Legammare](https://github.com/JoacoLega)
 
+The report can be found in the root directory under the name [informe.pdf](https://github.com/FrBernad/PERCY-PROJECT/blob/main/informe.pdf)
+
 # Percy
 
 **PercyCompiler** is a simple compiler implemented with Lex and Yacc for the **PercyLenguage** language. The **PercyLenguage** is a ***strongly-typed*** language that uses a syntax similar to javascript. This language allows you to generate simple ***static html*** files.
