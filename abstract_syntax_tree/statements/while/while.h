@@ -1,5 +1,5 @@
-#ifndef _WHILE_H
-#define _WHILE_H
+#ifndef _WHILE_H_cd5bb2e5e71eb062547a4f1ba1ff5244493d0e79
+#define _WHILE_H_cd5bb2e5e71eb062547a4f1ba1ff5244493d0e79
 
 #include "abstract_syntax_tree/ast/ast.h"
 #include "abstract_syntax_tree/ast_functions/ast_functions.h"

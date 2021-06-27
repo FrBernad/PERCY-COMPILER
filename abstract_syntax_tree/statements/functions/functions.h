@@ -1,5 +1,5 @@
-#ifndef _FUNCTIONS_H
-#define _FUNCTIONS_H
+#ifndef _FUNCTIONS_H_1916f93b486a80349a9523c11948524bd7ca3f09
+#define _FUNCTIONS_H_1916f93b486a80349a9523c11948524bd7ca3f09
 
 #include "abstract_syntax_tree/ast/ast.h"
 #include "abstract_syntax_tree/ast_functions/ast_functions.h"
