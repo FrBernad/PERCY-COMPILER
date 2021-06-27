@@ -15,36 +15,28 @@
 }
 
 // The next Section is the Token definitions.  All of them will be DEFINE in y.tab.h
-/*CONDITIONALS*/
+/*Conditionals*/
 %token <token> IF ELSE
 %nonassoc IF ELSE
 
-/*CICLE*/  
+/*Cycle*/  
 %token <token> FOR DO WHILE
 
 /*Logical operators*/
-
 %token <token> AND OR 
 
-/*No se si faltaria el !exp o no se como ponerlo*/
-
 /*Relational operators*/
-
 %token <token> '-' '+' '*' '/' '<' '>' EQ LE GE NEQ
 
-%token <token> MAIN RENDER ELEMENT_TYPE NEW INT_TYPE STRING_TYPE HTML NAVBAR FOOTER CONTAINER HEADER INSERT TEXT BODY
-
+%token <token> MAIN TYPE RENDER ELEMENT_TYPE NEW INT_TYPE STRING_TYPE HTML NAVBAR FOOTER CONTAINER HEADER INSERT TEXT BODY
 
 %token <string_value> STRING_VALUE
 %token <int_value> INT_VALUE
 
-%token <symbol> ID
-
 %type <node> TAG_VALUE TAG STATEMENT STATEMENTS DEFINITION DECLARATION FOR_ASSIGNMENT FOR_STATEMENT DO_WHILE WHILE_STATEMENT IF_STATEMENT ASSIGNATION VALUE INSERT_MT EXP
-%type <token> TYPE 
-%type <symbol> RENDER_CALL 
+%type <symbol> RENDER_CALL ID
 
-%token DECLARATION_TK TAG_TK ASSIGNATION_TK DEFINITION_TK STATEMENTS_TK FUNCTION_TK INSERT_MT_TK EXP_TK
+%token <token> DECLARATION_TK TAG_TK ASSIGNATION_TK DEFINITION_TK STATEMENTS_TK FUNCTION_TK INSERT_MT_TK EXP_TK
 
 %right '='
 %left OR AND

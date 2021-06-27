@@ -50,7 +50,6 @@ ALPHA   [a-zA-Z_]
 "body"                          {return TOKEN(BODY);}
 
  /*Relational operators*/
-
 ">"                             {return TOKEN('>');}
 ">="		                    {return TOKEN(GE);}
 "<"                             {return TOKEN('<'); }
@@ -58,7 +57,7 @@ ALPHA   [a-zA-Z_]
 "=="		                    {return TOKEN(EQ);}
 "!="                            {return TOKEN(NEQ);}
 
- /*valor*/
+ /*Values*/
 {ALPHA}({ALPHA}|{DIGIT})*       {SAVE_SYMBOL;return ID;}
 
 0|[1-9]{DIGIT}*                 {SAVE_INT;return INT_VALUE;}
